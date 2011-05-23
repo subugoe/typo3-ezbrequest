@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'ezbrequest'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">Titel: </label>
+			<label index="publisher">Verlag: </label>
+			<label index="P_ISSN">P_ISSN(s): </label>
+			<label index="E_ISSN">E_ISSN(s): </label>
+			<label index="subject">Fachgruppe(n): </label>
+			<label index="keyword">Schlagwort: </label>
+			<label index="ZDB_number">ZDB-Nummer: </label>
+			<label index="first_fulltext_issue">erste Volltextausgabe: </label>
+			<label index="last_fulltext_issue">letzte Volltextausgabe: </label>
+			<label index="homepage">Homepage(s): </label>
+			<label index="appearence">Erscheinungform: </label>
+			<label index="costs">Kosten: </label>
+			<label index="fulltext_articles">Volltextartikel von/bis: </label>
+			<label index="remarks">Bemerkung: </label>
+			<label index="noHits">Kein Treffer!</label>
+                        <label index="listLink">Zurück zur Zeitschriftenliste</label>
+			<label index="green">Freier Zugang</label>
+			<label index="red">Kein freier Zugang</label>
+			<label index="yellow">Eingeschränkter Zugang</label>
+			<label index="redyellow">Eingeschränkter Zugang</label>
+			<label index="unknown">Kein Information zur Zugangsberechtigung</label>
+		</languageKey>
+		<languageKey index="en" type="array">
+			<label index="title">Title: </label>
+			<label index="publisher">Publisher: </label>
+			<label index="P_ISSN">P_ISSN(s): </label>
+			<label index="E_ISSN">E_ISSN(s): </label>
+			<label index="subject">Subject(s): </label>
+			<label index="keyword">Keyword(s): </label>
+			<label index="homepage">Homepage(s): </label>
+			<label index="ZDB_number">ZDB-Number: </label>
+			<label index="first_fulltext_issue">Fulltext online since: </label>
+			<label index="last_fulltext_issue">Fulltext online until: </label>
+			<label index="appearence">Type of appearence: </label>
+			<label index="costs">Pricetype: </label>
+			<label index="fulltext_articles">Fulltextarticles from/to: </label>
+			<label index="fulltext">Fulltext: </label>
+			<label index="remarks">Remarks: </label>
+			<label index="noHits">No Hits!</label>
+                        <label index="listLink">Back to List of Journals</label>
+                        <label index="green">Free access</label>
+                        <label index="red">No free access</label>
+                        <label index="yellow">Restricted access</label>
+                        <label index="redyellow">Restricted access</label>
+                        <label index="unknown">No access information</label>
+
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="title">Titel: </label>
+			<label index="publisher">Verlag: </label>
+			<label index="P_ISSN">P_ISSN(s): </label>
+			<label index="E_ISSN">E_ISSN(s): </label>
+			<label index="subject">Fachgruppe(n): </label>
+			<label index="keyword">Schlagwort: </label>
+			<label index="ZDB_number">ZDB-Nummer: </label>
+			<label index="first_fulltext_issue">erste Volltextausgabe: </label>
+			<label index="last_fulltext_issue">letzte Volltextausgabe: </label>
+			<label index="homepage">Homepage(s): </label>
+			<label index="appearence">Erscheinungform: </label>
+			<label index="costs">Kosten: </label>
+			<label index="fulltext_articles">Volltextartikel von/bis: </label>
+			<label index="remarks">Bemerkung: </label>
+			<label index="noHits">Kein Treffer!</label>
+                        <label index="listLink">Zurück zur Zeitschriftenliste</label>
+                        <label index="green">Freier Zugang</label>
+                        <label index="red">Kein freier Zugang</label>
+                        <label index="yellow">Eingeschränkter Zugang</label>
+                        <label index="redyellow">Eingeschränkter Zugang</label>
+                        <label index="unknown">Keine Information zur Zugangsberechtigung</label>
+
+		</languageKey>
+	</data>
+</T3locallang>

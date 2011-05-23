@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Template file for the list view of th &quot;ezbrequest&quot;extension.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+<h3>Template file for the &quot;ezbrequest&quot;extension.</h3>
+<p><b>Available Markers:</b></p>
+<ul>
+  <li>###T3LANG###</li>
+  <li>###JOURNALNAVI###</li>
+  <li>###NOTATION###</li>
+  <li>###USERIP###</li>
+  <li>###HEADLINE###</li>
+  <li>###JOURNALLIST###</li>
+  <li>###LANG###</li>
+  <li>###INFO1###</li>
+  <li>###INFO2###</li>                                       
+</ul>
+
+
+<h1>Template for journallist</h1>
+
+<!-- ###TEMPLATE### begin -->
+<div id="navi">
+ <div id="journalNavi">###JOURNALNAVI###</div>
+ <div id="ezb_search_form">
+    <form action="" method="get">
+      <fieldset>
+	<input type="hidden" name="L" value="###T3LANG###" />
+	<input type="text" class="iputStartSmall"  name="jq_term1" />
+	<input type="submit" class="submStartSmall" value="Suche" />
+	<input type="hidden" name="jq_type1" value="KT" />	
+	<input type="hidden" name="Notations[]" value="###NOTATION###" />
+	<input type="hidden" name="selected_colors[]" value="1" />
+	<input type="hidden" name="selected_colors[]" value="2" />
+	<input type="hidden" name="selected_colors[]" value="4" />
+	<input type="hidden" name="lang" value="###LANG###" />
+	<input type="hidden" name="client_ip" value="###USERIP###" />
+	<input type="hidden" name="xmloutput" value="1" />
+     </fieldset>
+    </form>
+  </div>
+</div>
+<div id="journalList">
+###HEADLINE###
+
+###JOURNALLIST###
+</div>
+<div>
+<span class="notify">Information:</span><br />
+<span class="info">###INFO1###</span><span class="info">###INFO2###</span>
+</div>
+<!-- ###TEMPLATE### end -->
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Template file for the &quot;ebzrequest&quot;extension.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head>
+<body>
+<h3>Template file for the &quot;ezbrequest&quot;extension.</h3>
+<p><b>Available Markers:</b></p>
+<ul>
+  <li>###T3LANG###</li>
+  <li>###JOURNALNAVI### </li>
+  <li>###NOTATION### </li>
+  <li>###USERIP### </li>
+  <li>###HEADLINE###</li>
+  <li>###JOURITEM###</li>
+  <li>###LANG###</li>
+</ul>
+
+
+<h1>Normal Template without JavaScript</h1>
+
+<!-- ###TEMPLATE### begin -->
+
+<div id="navi">
+  <div id="journalNavi">###JOURNALNAVI###</div>
+  <div id="ezbSearchForm">
+	<form action="" method="get">
+	  <fieldset>	
+		<input type="hidden" name="lang" value="###T3LANG###" />
+		<label for="ezbSearchTerm" class="hidden">SearchTerm</label>
+		<input type="text" class="iputStartSmall" name="jq_term1" id="ezbSearchTerm"/>
+		<label for="ezbSubmit" class="hidden">Submit</label>
+                <input type="submit" name="submit" id="ezbSubmit" class="submStartSmall" value="Suche"/>
+		<input type="hidden" name="jq_type1" value="KT"/>
+		<input type="hidden" name="Notations[]" value="###NOTATION###"/>
+		<input type="hidden" name="selected_colors" value="7"/>
+		<input type="hidden" name="client_ip" value="###USERIP###"/>
+		<input type="hidden" name="lang" value="###LANG###" />
+		
+		<input type="hidden" name="xmloutput" value="1"/>
+	   </fieldset>
+	</form>
+</div>
+</div>
+
+
+<div id="jourItem">
+<span class="title">###HEADLINE###</span><br />
+###JOURITEM###
+</div>
+<!-- ###TEMPLATE### end -->
+</body>
+</html>

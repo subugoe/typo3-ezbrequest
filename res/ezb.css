@@ -1,0 +1,89 @@
+.tx-ezbrequest-pi1 
+
+#navi {
+margin-top: -3.3em;
+float: right;
+text-align: right;
+width: 80%;
+display: inline;
+
+}
+
+
+#journalNavi {
+float: left;
+width: 55%;
+padding: 1.5em 0 0 0;
+}
+
+#journalNavi .act {
+font-weight: bold;
+}
+
+#journalNavi a{
+padding: 0 0.2em;
+color: #192d57;
+
+}
+
+#ezb_search_form {
+display:inline;
+float: right;
+width: 40%;
+}
+
+
+#jourItem {
+padding-top: 2em;
+width: 100%;
+}
+
+#jourItem table {
+padding: 1em 0;
+}
+
+#jourItem table td {
+padding-right: 1em;
+vertical-align: top;
+}
+
+#jourItem span.title {
+padding-left: 0.5em;
+font-weight: bold;
+font-size: 1.3em;
+}
+
+
+#journalList {
+padding: 1em 0;
+}
+
+#journalList a {
+padding-left: 0.5em;
+color: #192d57;
+}
+
+.notify {
+font-weight: bold;
+font-size: 1.2em;
+}
+
+.identify {
+width: 100%;
+margin: 0 0 1.5em 0;
+}
+
+.firstlist {
+margin: 0 0 1.5em 0;
+}
+
+.hits {
+font-weight: bold;
+padding-right: 5em;
+}
+
+.info {
+padding: 0 1em 0 0 ;
+}
+
+

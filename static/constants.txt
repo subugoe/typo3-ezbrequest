@@ -1,0 +1,26 @@
+plugin.tx_ezbrequest_pi1 {
+
+	# cat=EZB request/url/0 ; type=string; label= EZB base URL for journal list request. 
+    ezbListURL = http://rzblx1.uni-regensburg.de/ezeit/fl.phtml 
+
+ 	# cat=EZB request/url/1 ; type=string; label= EZB base URL for journal detail request.
+    ezbItemURL = http://rzblx1.uni-regensburg.de/ezeit/detail.phtml
+    
+    # cat=EZB request/url/2 ; type=string; label= EZB base URL for forwarding to selected journal.
+    ezbJourURL = http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml
+    
+    # cat=EZB request/url/3 ; type=string; label= EZB base URL for journal search.
+    ezbSearchURL = http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml    
+    
+    # cat=EZB request/notation/0 ; type=string; label= EZB-Code for the Subject.
+    notation = SA-SP
+    
+    # cat=EZB request/file/0 ; type=string; label=Path to css-file.
+    css  = EXT:ezbrequest/res/ezb.css
+    
+    # cat=EZB request/file/1; type=string; label=Path to template for list view
+    listViewTemplate = EXT:ezbrequest/pi1/list_view.htm
+
+    # cat=EZB request/file/2; type=string; label=Path to template for item view
+    itemViewTemplate = EXT:ezbrequest/pi1/item_view.htm        
+}

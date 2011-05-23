@@ -1,0 +1,11 @@
+plugin.tx_ezbrequest_pi1 {
+
+  	ezbListURL = {$plugin.tx_ezbrequest_pi1.ezbListURL}
+  	ezbItemURL = {$plugin.tx_ezbrequest_pi1.ezbItemURL}
+  	ezbJourURL = {$plugin.tx_ezbrequest_pi1.ezbJourURL}
+  	ezbSearchURL = {$plugin.tx_ezbrequest_pi1.ezbSearchURL}
+ 	css = {$plugin.tx_ezbrequest_pi1.css}
+	listViewTemplate = {$plugin.tx_ezbrequest_pi1.listViewTemplate}
+	itemViewTemplate = {$plugin.tx_ezbrequest_pi1.itemViewTemplate}
+ 	notation = {$plugin.tx_ezbrequest_pi1.notation}
+ }
