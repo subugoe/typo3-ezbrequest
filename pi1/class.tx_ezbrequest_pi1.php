@@ -276,7 +276,8 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 	 * Traverses  the top-node of the EZB journal navigation list  and generate a linked alphabetical navigation list
 	 *
 	 * @param SimpleXMLElement	$node: xml-node with journal list navigation nodes
-	 * @param string			$currentNode: name of the current list page
+	 * @param string			$currentPage: name of the current list page
+	 * @param string			$currentPageEnd
 	 * @param array			$params: navigation list parameters
 	 * @param string			$paramString: the same as $params as string
 	 * @return string		$letterLinks: linked navigation list as HTML-snippet
@@ -289,9 +290,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 
 		if ($currentPage == "A") {
 			$listParams['lc'] = "B";
-			$letterLinks .= '<span class="act">';
-			$letterLinks .= $this->pi_linkToPage($currentPage, $this->conf['listTarget'], '', $params);
-			$letterLinks .= '</span>&nbsp;';
+			$letterLinks .= '<span class="act">' . $currentPage . '</span>&nbsp;';
 		}
 
 		foreach ($node as $pages) {
@@ -299,10 +298,8 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			$params["lc"] = (String)$pages["lc"];
 			$label = (string)$pages;
 			$letterLinks .= $this->pi_linkToPage($label, $this->conf['listTarget'], '', $params);
-			if ($currentPage[0] == (string)$pages["lc"]) {
-				$letterLinks .= '<span class="act">';
-				$letterLinks .= $this->pi_linkToPage($currentPage, $this->conf['listTarget'] . '' . $params);
-				$letterLinks .= '</span>';
+			if (substr((string)$currentPage[0], 0,1) == (string)$pages["lc"]) {
+				$letterLinks .= '<span class="act">' . $currentPage . '</span>';
 			}
 		}
 		return $letterLinks;
