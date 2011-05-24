@@ -381,25 +381,26 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 	 * @return string                $itemTable: table with journal details as HTML-snippet
 	 */
 	function createItemTable ($journal, $listParams, $listParamString, $itemParam, $itemParamString) {
-
-
 		$itemDetails = array();
 
 		//traverse xml for creating detailed item table 
 		$itemDetails["publisher"] = $journal->detail->publisher;
-		if ($journal->detail->E_ISSNs->E_ISSN) {
-			foreach ($journal->detail->E_ISSNs->E_ISSN as $issn) {
-				$moreValues .= $issn . '<br/>';
+		if ($journal->detail->E_ISSNs->E_ISSN || $journal->detail->P_ISSNs->P_ISSN) {
+			$values = array();
+			foreach ($journal->detail->E_ISSNs->E_ISSN as $eissn) {
+				$values[] = $eissn . '(electronic)';
 			}
-			$itemDetails['E_ISSN'] = $moreValues;
-			$moreValues = "";
-		}
-		if ($journal->detail->P_ISSNs->P_ISSN) {
-			foreach ($journal->detail->P_ISSNs->P_ISSN as $pissn) {
-				$moreValues .= $pissn . '<br/>';
-			}
-			$itemDetails['P_ISSN'] = $moreValues;
 
+			foreach ($journal->detail->P_ISSNs->P_ISSN as $pissn) {
+				$values[] = $pissn . '(print)';
+			}
+
+			$itemDetails['ISSN'] = implode(', ', $values);
+
+
+		}
+		
+		if ($journal->detail->ZDB_number) {
 			/* Alte Parameter sichern */
 			$oldATagParams = $GLOBALS['TSFE']->ATagParams;
 			$GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
@@ -410,6 +411,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 
 			$moreValues = "";
 		}
+
 		if ($journal->detail->subjects->subject) {
 			foreach ($journal->detail->subjects->subject as $subject) {
 				$moreValues .= $subject . '; ';
@@ -417,6 +419,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			$itemDetails['subject'] = $moreValues;
 			$moreValues = "";
 		}
+
 		if ($journal->detail->keywords->keyword) {
 			foreach ($journal->detail->keywords->keyword as $keyword) {
 				$moreValues .= $keyword . '; ';

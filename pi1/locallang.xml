@@ -8,6 +8,7 @@
 		<languageKey index="default" type="array">
 			<label index="title">Titel: </label>
 			<label index="publisher">Verlag: </label>
+			<label index="ISSN">ISSN: </label>
 			<label index="P_ISSN">P_ISSN(s): </label>
 			<label index="E_ISSN">E_ISSN(s): </label>
 			<label index="subject">Fachgruppe(n): </label>
@@ -30,6 +31,7 @@
 		<languageKey index="en" type="array">
 			<label index="title">Title: </label>
 			<label index="publisher">Publisher: </label>
+			<label index="ISSN">ISSN: </label>
 			<label index="P_ISSN">P_ISSN(s): </label>
 			<label index="E_ISSN">E_ISSN(s): </label>
 			<label index="subject">Subject(s): </label>
