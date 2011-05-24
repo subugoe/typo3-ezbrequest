@@ -144,7 +144,6 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 
 				//fetch search results
 				$xml = simplexml_load_file($this->conf['ezbSearchURL'] .'?'. $listParamString . '&hits_per_page=100000');
-debugster($this->conf['ezbSearchURL']);
 				$institut = $this->pi_getLL('institut');
                                 $institut .= (string) $xml->library?(string) $xml->library: $this->pi_getLL('none').'; ';
 
