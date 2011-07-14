@@ -56,8 +56,21 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$content = '';
 
+		$notationParams = '';
 		$listParams = $this->baseParams;
-		$listParams['notation'] = $this->conf['notation'];
+		if (strpos($this->conf['notation'], ',') === False) {
+			// Just a single notation given as the parameter.
+			$listParams['notation'] = $this->conf['notation'];
+		}
+		else {
+			// A comma-separated list of notations given as the parameter
+			$notationParams = '';
+			foreach (explode(',', $this->conf['notation']) as $notation) {
+				$notationParams .= '&Notations[]=' . $notation;
+			}
+			unset ($listParams['notation']);
+		}
+
 		$itemParams = $this->baseParams;
 
 		$itemParams['xmloutput'] = '0';
@@ -72,12 +85,13 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			$listParamString .= $key . '=';
 			$listParamString .= $value . '&';
 		}
+		$listParamString .= $notationParams;
 
 		foreach ($itemParams as $key => $value) {
 			$itemParamString .= $key . '=';
 			$itemParamString .= $value . '&';
 		}
-
+		
 
 		if ($_GET['jour_id']) {
 			//######################### detailed item-view required #########################
@@ -154,7 +168,14 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			}
 			else {
 				//fetch journal list
-				$xml = simplexml_load_file($this->conf['ezbListURL'] . '?' . $listParamString);
+				$URL = '';
+				if (strpos($listParamString, 'Notations') === False) {
+					$URL = $this->conf['ezbListURL'] . '?' . $listParamString;
+				}
+				else {
+					$URL = $this->conf['ezbSearchURL'] . '?' . $listParamString;
+				}
+				$xml = simplexml_load_file($URL);
 				$institut = $this->pi_getLL('institut');
 				$institut .= (string)$xml->library ? (string)$xml->library : $this->pi_getLL('none') . '; ';
 
@@ -163,10 +184,11 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				$currentEnd = (string)$xml->page_vars->lc['value'];
 
 				//find xml node with navigation list
-				$list = $xml->ezb_alphabetical_list->navlist->other_pages;
+				$list = $xml->xpath('//navlist/other_pages');
 
 				//find node with journal list
-				$journalNode = $xml->ezb_alphabetical_list;
+				$listNodes = $xml->xpath('ezb_alphabetical_list|ezb_alphabetical_list_searchresult');
+				$journalNode = $listNodes[0];
 				$currentPage = $journalNode->navlist->current_page;
 			}
 			if ($list != null) {
