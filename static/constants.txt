@@ -11,7 +11,10 @@ plugin.tx_ezbrequest_pi1 {
     
     # cat=EZB request/url/3 ; type=string; label= EZB base URL for journal search.
     ezbSearchURL = http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml    
-    
+
+    # cat=EZB request/bibid/0 ; type=string; label= EZB library ID (NATLI for Nationallizenzen).
+    bibid =    
+
     # cat=EZB request/notation/0 ; type=string; label= EZB-Code for the Subject.
     notation = SA-SP
     

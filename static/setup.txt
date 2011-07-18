@@ -4,6 +4,7 @@ plugin.tx_ezbrequest_pi1 {
   	ezbItemURL = {$plugin.tx_ezbrequest_pi1.ezbItemURL}
   	ezbJourURL = {$plugin.tx_ezbrequest_pi1.ezbJourURL}
   	ezbSearchURL = {$plugin.tx_ezbrequest_pi1.ezbSearchURL}
+  	bibid = {$plugin.tx_ezbrequest_pi1.bibid}
  	css = {$plugin.tx_ezbrequest_pi1.css}
 	listViewTemplate = {$plugin.tx_ezbrequest_pi1.listViewTemplate}
 	itemViewTemplate = {$plugin.tx_ezbrequest_pi1.itemViewTemplate}

@@ -273,6 +273,8 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		$itemTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'itemTarget', 'sDEF');
 		$this->conf['itemTarget'] = $itemTarget ? $itemTarget : $this->conf['currentPage'];
 
+		$itemTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'bibid', 'sDEF');
+		$this->conf['bibid'] = $itemTarget ? $itemTarget : $this->conf['bibid'];
 
 		//set base parameter
 		$userIp = t3lib_div::getIndpEnv('REMOTE_ADDR');
