@@ -50,14 +50,15 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 	 * @return	The content that is displayed on the website
 	 */
 	function main ($content, $conf) {
-
-
 		$this->init($conf);
 		$this->pi_loadLL();
 		$content = '';
 
-		$notationParams = '';
+		// Read Notations to query from configuration.
+		// This can be a single string like 'U' or 'TE-TL' or a comma separated
+		// list of such strings which requires slightly different treatment.
 		$listParams = $this->baseParams;
+		$notationParams = '';
 		if (strpos($this->conf['notation'], ',') === False) {
 			// Just a single notation given as the parameter.
 			$listParams['notation'] = $this->conf['notation'];
@@ -71,32 +72,30 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			unset ($listParams['notation']);
 		}
 
-		$itemParams = $this->baseParams;
-
-		$itemParams['xmloutput'] = '0';
-		//complate params
+		$listParams = $this->baseParams;
 
 		$listParams["sc"] = $_GET['sc'];
 		$listParams["lc"] = $_GET['lc'];
 
 		$listParamString = '';
-		$itemParamString = '';
 		foreach ($listParams as $key => $value) {
 			$listParamString .= $key . '=';
 			$listParamString .= $value . '&';
 		}
 		$listParamString .= $notationParams;
 
+
+		$itemParams = $this->baseParams;
+		$itemParams['xmloutput'] = '0';
+		$itemParamString = '';
 		foreach ($itemParams as $key => $value) {
 			$itemParamString .= $key . '=';
 			$itemParamString .= $value . '&';
 		}
-		
 
+		
 		if ($_GET['jour_id']) {
 			//######################### detailed item-view required #########################
-
-
 			$xml = simplexml_load_file($this->conf['ezbItemURL'] . '?' . $_SERVER['QUERY_STRING']);
 
 			$journal = $xml->ezb_detail_about_journal->journal;
@@ -175,6 +174,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				else {
 					$URL = $this->conf['ezbSearchURL'] . '?' . $listParamString;
 				}
+
 				$xml = simplexml_load_file($URL);
 				$institut = $this->pi_getLL('institut');
 				$institut .= (string)$xml->library ? (string)$xml->library : $this->pi_getLL('none') . '; ';
@@ -225,6 +225,8 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		return $this->pi_wrapInBaseClass($content);
 	}
 
+	
+	
 	/**
 	 * initializes the plugin: gets the settings from the flexform
 	 *
@@ -276,24 +278,26 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		$itemTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'bibid', 'sDEF');
 		$this->conf['bibid'] = $itemTarget ? $itemTarget : $this->conf['bibid'];
 
-		//set base parameter
-		$userIp = t3lib_div::getIndpEnv('REMOTE_ADDR');
 
-		$baseParams = array(
+		//set base parameter
+		$this->baseParams = array(
 			'L' => $GLOBALS["TSFE"]->sys_language_uid,
 			'notation' => $this->conf['notation'],
-			'client_ip' => $userIp,
 			'xmloutput' => '1',
 			'colors' => '7',
 			'lang' => $lang[$GLOBALS["TSFE"]->sys_language_uid],
 		);
-		$this->baseParams = $baseParams;
-
-		$htmlBaseParamString = 'notation=' . $this->conf['notation'] . '&client_ip=' . $userIp . '&lang=' . $lang . '&colors=7';
-
-		$letterLinks = "";
-		$infoLinks = "";
-		$search = 0;
+		
+		if ($this->conf['bibid']) {
+			$this->baseParams['bibid'] = $this->conf['bibid'];
+			if ($this->conf['bibid'] == 'NATLI') {
+				$this->baseParams['colors'] = 2;
+			}
+		}
+		else {
+			$this->baseParams['bibid'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
+		}
+		
 	}
 
 	/**
