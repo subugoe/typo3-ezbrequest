@@ -1,6 +1,4 @@
-.tx-ezbrequest-pi1 
-
-#navi {
+.tx-ezbrequest-pi1 #navi {
 margin-top: -3.3em;
 float: right;
 text-align: right;
@@ -53,6 +51,14 @@ font-weight: bold;
 font-size: 1.3em;
 }
 
+
+.tx-ezbrequest-pi1 ul {
+	list-style-type: none;
+}
+
+.tx-ezbrequest-pi1 .alphabetMenu li {
+	display: inline;
+}
 
 #journalList {
 padding: 1em 0;

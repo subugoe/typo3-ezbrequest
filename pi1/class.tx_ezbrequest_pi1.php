@@ -54,46 +54,14 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		$this->pi_loadLL();
 		$content = '';
 
-		// Read Notations to query from configuration.
-		// This can be a single string like 'U' or 'TE-TL' or a comma separated
-		// list of such strings which requires slightly different treatment.
 		$listParams = $this->baseParams;
-		$notationParams = '';
-		if (strpos($this->conf['notation'], ',') === False) {
-			// Just a single notation given as the parameter.
-			$listParams['notation'] = $this->conf['notation'];
-		}
-		else {
-			// A comma-separated list of notations given as the parameter
-			$notationParams = '';
-			foreach (explode(',', $this->conf['notation']) as $notation) {
-				$notationParams .= '&Notations[]=' . $notation;
-			}
-			unset ($listParams['notation']);
-		}
-
-		$listParams = $this->baseParams;
-
-		$listParams["sc"] = $_GET['sc'];
-		$listParams["lc"] = $_GET['lc'];
-
-		$listParamString = '';
-		foreach ($listParams as $key => $value) {
-			$listParamString .= $key . '=';
-			$listParamString .= $value . '&';
-		}
-		$listParamString .= $notationParams;
-
+		$listParams['notation'] = $this->conf['notation'];
+		$listParams = array_merge($listParams, $_GET);
+		$listParams['lang'] = $GLOBALS['TSFE']->lang; // overwrite language setting (for language switch)
 
 		$itemParams = $this->baseParams;
 		$itemParams['xmloutput'] = '0';
-		$itemParamString = '';
-		foreach ($itemParams as $key => $value) {
-			$itemParamString .= $key . '=';
-			$itemParamString .= $value . '&';
-		}
 
-		
 		if ($_GET['jour_id']) {
 			//######################### detailed item-view required #########################
 			$xml = simplexml_load_file($this->conf['ezbItemURL'] . '?' . $_SERVER['QUERY_STRING']);
@@ -114,10 +82,9 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			$GLOBALS['TSFE']->ATagParams = $oldATagParams;
 			unset($oldATagParams);
 
-			$itemTable = $this->createItemTable($journal, $listParams, $listParamString, $itemParams, $itemParamString);
+			$itemTable = $this->createItemTable($journal, $listParams, $itemParams);
 
-
-
+			
 			$this->templateCode = $this->cObj->fileResource($this->conf['itemViewTemplate']);
 			$templateMarker = "###TEMPLATE###";
 
@@ -130,9 +97,10 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				"###JOURNALNAVI###" => '',
 				"###NOTATION###" => $this->conf['notation'],
 				"###USERIP###" => $this->baseParams['client_ip'],
-				"###LANG###" => $lang[$GLOBALS["TSFE"]->sys_language_uid],
+				"###LANG###" => $GLOBALS['TSFE']->lang,
 				"###HEADLINE###" => $headline,
 				"###JOURITEM###" => $itemTable,
+				"###SEARCHTERM###" => ""
 			);
 
 			// build content from template + array
@@ -141,18 +109,12 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		else {
 		//######################### list-view required #########################
 			$search = 0;
-			if ($_GET['client_ip']) {
-				$listParamString = $_SERVER[QUERY_STRING];
-				$listParams = $_GET;
-			}
 
 			if ($_GET['jq_term1']) {
-
 				$search = 1;
-
-
 				//fetch search results
-				$xml = simplexml_load_file($this->conf['ezbSearchURL'] . '?' . $listParamString . '&hits_per_page=100000');
+				$URL = $this->conf['ezbSearchURL'] . '?' . $this->paramString($listParams, 2) . 'hits_per_page=100000';
+				$xml = simplexml_load_file($URL);
 				$institut = $this->pi_getLL('institut');
 				$institut .= ((string)$xml->library ? (string)$xml->library : $this->pi_getLL('none')) . '; ';
 
@@ -168,13 +130,12 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			else {
 				//fetch journal list
 				$URL = '';
-				if (strpos($listParamString, 'Notations') === False) {
-					$URL = $this->conf['ezbListURL'] . '?' . $listParamString;
+				if (strpos($listParams['notation'], ',') === False) {
+					$URL = $this->conf['ezbListURL'] . '?' . $this->paramString($listParams, 1);
 				}
 				else {
-					$URL = $this->conf['ezbSearchURL'] . '?' . $listParamString;
+					$URL = $this->conf['ezbSearchURL'] . '?' . $this->paramString($listParams, 2);
 				}
-
 				$xml = simplexml_load_file($URL);
 				$institut = $this->pi_getLL('institut');
 				$institut .= ((string)$xml->library ? (string)$xml->library : $this->pi_getLL('none')) . '; ';
@@ -184,7 +145,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				$currentEnd = (string)$xml->page_vars->lc['value'];
 
 				//find xml node with navigation list
-				$list = $xml->xpath('//navlist/other_pages');
+				$list = $xml->xpath('//navlist/other_pages|//navlist/current_page');
 
 				//find node with journal list
 				$listNodes = $xml->xpath('ezb_alphabetical_list|ezb_alphabetical_list_searchresult');
@@ -192,15 +153,13 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				$currentPage = $journalNode->navlist->current_page;
 			}
 			if ($list != null) {
-				$navi = $this->createNavi($list, $currentPage, $currentEnd, $listParams, $listParamString);
+				$navi = $this->createNavi($list, $currentPage, $currentEnd, $listParams);
 			}
 			if (($search) && ($hits > 0 )) {
 				$navi = '<span class="hits">' . $hits . $this->pi_getLL('hitText') . '</span> ' . $navi;
 			}
 
-
-
-			$journalList = $this->createList($journalNode, $listParams, $listParamString, $itemParams, $itemParamString);
+			$journalList = $this->createList($journalNode, $listParams, $itemParams);
 			$this->templateCode = $this->cObj->fileResource($this->conf['listViewTemplate']);
 			$templateMarker = "###TEMPLATE###";
 			$template = array();
@@ -212,13 +171,13 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				"###JOURNALNAVI###" => $navi,
 				"###NOTATION###" => $this->conf['notation'],
 				"###USERIP###" => $this->baseParams['client_ip'],
-				"###LANG###" => $GLOBALS["TSFE"]->sys_language_uid,
+				"###LANG###" => $GLOBALS['TSFE']->lang,
 				"###HEADLINE###" => '',
 				"###JOURNALLIST###" => $journalList,
 				"###INFO1###" => $institut,
 				"###INFO2###" => $this->pi_getLL('ipText') . $this->baseParams['client_ip'],
+				"###SEARCHTERM###" => $_GET['jq_term1']
 			);
-
 
 			$content = $this->cObj->substituteMarkerArrayCached($template, array(), $markerArray, array());
 		}
@@ -255,13 +214,8 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		if ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'listViewTemplate', 'sDEF')) {
 			$this->conf['listViewTemplate'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'listViewTemplate', 'sDEF');
 		}
+
 		//init params
-
-		$lang = array(
-			0 => 'de',
-			1 => 'en',
-		);
-
 		$this->conf['currentPage'] = $GLOBALS['TSFE']->id;
 		$this->conf['currentPageLink'] = $this->pi_getPageLink($GLOBALS['TSFE']->id);
 
@@ -285,9 +239,8 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			'notation' => $this->conf['notation'],
 			'xmloutput' => '1',
 			'colors' => '7',
-			'lang' => $lang[$GLOBALS["TSFE"]->sys_language_uid],
+			'lang' => $GLOBALS['TSFE']->lang,
 		);
-		
 		if ($this->conf['bibid']) {
 			$this->baseParams['bibid'] = $this->conf['bibid'];
 			if ($this->conf['bibid'] == 'NATLI') {
@@ -300,6 +253,44 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		
 	}
 
+
+
+	/**
+	 * Uses $params array to create a query string.
+	 * Take into account that the 'notation' setting requires special treatment
+	 * for different kinds of queries and depending on the number of notations.
+	 *
+	 * @param type $params
+	 * @param $mode - one of	0: internal link,
+	 *							1: link for EZB list query
+	 *							2: link for EZB search query
+	 * @return string
+	 */
+	private function paramString($params, $mode = 0) {
+		$string = '';
+
+		foreach ($params as $name => $value) {
+			if ($name === 'notation' && $mode > 0) {
+				if (strpos($value, ',') === False && $mode == 1) {
+					$string .= $name . '=' . $value . '&';
+				}
+				else {
+					$notations = explode(',', $value);
+					foreach ($notations as $notation) {
+						$string .= 'Notations[]=' . $notation . '&';
+					}
+				}
+			}
+			else {
+				$string .= $name . '=' . $value . '&';
+			}
+		}
+
+		return $string;
+	}
+
+
+
 	/**
 	 * Traverses  the top-node of the EZB journal navigation list  and generate a linked alphabetical navigation list
 	 *
@@ -307,105 +298,99 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 	 * @param string			$currentPage: name of the current list page
 	 * @param string			$currentPageEnd
 	 * @param array			$params: navigation list parameters
-	 * @param string			$paramString: the same as $params as string
 	 * @return string		$letterLinks: linked navigation list as HTML-snippet
 	 */
-	function createNavi ($node, $currentPage, $currentPageEnd, $params, $paramString) {
-
-		$letterLinks = '';
+	function createNavi ($node, $currentPage, $currentPageEnd, $params) {
+		$letterLinks = "<ul class='alphabetMenu'>\n";
 		$params['sindex'] = 0;
-		$paramString = preg_replace('/sindex=\d*/', 'sindex=0', $paramString);
-
-		if ($currentPage == "A") {
-			$listParams['lc'] = "B";
-			$letterLinks .= '<span class="act">' . $currentPage . '</span>&nbsp;';
-		}
 
 		foreach ($node as $pages) {
-			$params["sc"] = (String)$pages["sc"];
-			$params["lc"] = (String)$pages["lc"];
-			$label = (string)$pages;
-			$letterLinks .= $this->pi_linkToPage($label, $this->conf['listTarget'], '', $params);
-			if (substr((string)$currentPage[0], 0,1) == (string)$pages["lc"]) {
-				$letterLinks .= '<span class="act">' . $currentPage . '</span>';
+			if ($pages->getName() == 'current_page') {
+				$letterLinks .= '<li class="act">' . $currentPage . "</li>\n";
+			}
+			else {
+				$params["sc"] = (String)$pages["sc"];
+				$params["lc"] = (String)$pages["lc"];
+				$label = (string)$pages;
+				$letterLinks .= "<li>" . $this->pi_linkToPage($label, $this->conf['listTarget'], '', $params) . "</li>\n";
 			}
 		}
+
+		$letterLinks .= "</ul>\n";
 		return $letterLinks;
 	}
+
+
 
 	/**
 	 * Traverses  xml nodes of journal list and generates a linked list of journals with access information
 	 *
-	 * @param SimpleXMLElement       $node: xml-node of journal list navigation nodes
-	 * @param array                  $listParams: parameters for journal list request
-	 * @param string                 $listParamString: $listParams as string
-	 * @param array                  $itemParams: parameters for journal details request
-	 * @param string			$itemParamString: $itemParams as string
-	 * @return string                $journalLinks: linked list of journals as HTML-snippet
+	 * @param SimpleXMLElement      $node: xml-node of journal list navigation nodes
+	 * @param array                 $listParams: parameters for journal list request
+	 * @param array                 $itemParams: parameters for journal details request
+	 * @return string               $journalLinks: linked list of journals as HTML-snippet
 	 */
-	function createList ($node, $listParams, $listParamString, $itemParams, $itemParamString) {
+	function createList ($node, $listParams, $itemParams) {
 
 		$first = $node->first_fifty;
 		$journals = $node->alphabetical_order;
-		$listParamString = $_SERVER['QUERY_STRING'];
 		$listParams = isset($_GET['client_ip']) ? $_GET : $this->baseParams;
-		$firstList = '';
 		$journalLinks = '';
 
 		if ($first != null) {
-
+			$firstList = '';
 			foreach ($first as $firstlink) {
-				$label = '&raquo;&nbsp;' . $firstlink->first_fifty_titles;
+				$label = '&laquo;&nbsp;' . $firstlink->first_fifty_titles;
 				$listParams['sc'] = (String)$firstlink['sc'];
 				$listParams['lc'] = (String)$firstlink["lc"];
 				$listParams['sindex'] = (String)$firstlink["sindex"];
-				$firstList .= $this->pi_linkToPage($label, $this->conf['listTarget'], '', $listParams) . '<br />';
+				$firstList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '', $listParams) . "</li>\n";
 			}
+			$journalLinks .= '<ul class="firstlist">' . "\n" . $firstList . "</ul>\n";
 		}
 
-		$journalLinks .= '<div class="firstlist">' . $firstList . '</div>';
-
-		$next = $node->next_fifty;
-		if ($next != null) {
-
-			$nextList = '';
-			foreach ($next as $nextlink) {
-				$label = '&raquo;&nbsp;' . $nextlink->next_fifty_titles;
-
-				$listParams['sc'] = (String)$nextlink['sc'];
-
-				$listParams['lc'] = (String)$nextlink['lc'];
-				$listParams['sindex'] = (String)$nextlink['sindex'];
-				$nextList .= $this->pi_linkToPage($label, $this->conf['listTarget'], '', $listParams) . '<br />';
-			}
-		}
-
+		$journalLinks .= '<ul>';
 		foreach ($journals->journals->journal as $journal) {
 			$access = $journal->journal_color['color'];
 			$image = '<img alt="' . $access . '" width="30px" height="12" src="typo3conf/ext/ezbrequest/res/' . $access . '.gif" />';
+
 			$itemParams["jour_id"] = (string)$journal['jourid'];
 			$itemParams["xmloutput"] = "0";
+			$journalLinks .= '<li><span class="ampel"><a href="' . $this->conf['ezbItemURL'] . '?' . $this->paramString($itemParams) . '">'. $image . '</span>';
 
-			$journalLinks .= $this->pi_linkToPage($image, $this->conf['ezbItemURL'] . '?' . $itemParamString . 'jour_id=' . (string)$journal['jourid'], '', array());
 			$title = (string)$journal->title;
 			$itemParams["xmloutput"] = "1";
-			$journalLinks .= $this->pi_linkToPage(htmlspecialchars($title), $this->conf['itemTarget'], '', $itemParams) . "<br />";
+			$journalLinks .= $this->pi_linkToPage(htmlspecialchars($title), $this->conf['itemTarget'], '', $itemParams) . "</li>\n";
 		}
-		$journalLinks .= '<br />' . $nextList;
+		$journalLinks .= "</ul>\n";
+
+		$next = $node->next_fifty;
+		if ($next != null) {
+			$nextList = '';
+			foreach ($next as $nextlink) {
+				$label = '&raquo;&nbsp;' . $nextlink->next_fifty_titles;
+				$listParams['sc'] = (String)$nextlink['sc'];
+				$listParams['lc'] = (String)$nextlink['lc'];
+				$listParams['sindex'] = (String)$nextlink['sindex'];
+				$nextList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '', $listParams) . "</li>\n";
+			}
+			$journalLinks .= '<ul class="nextlist">' . "\n" . $nextList . "</ul>\n";
+		}
+
 		return $journalLinks;
 	}
+
+
 
 	/**
 	 * Traverses  xml node with journal details and generates a table
 	 *
 	 * @param SimpleXMLElement       $journal: xml-node with journal details
 	 * @param array                  $listParams: parameters for journal list request
-	 * @param string                 $listParamString: $listParams as string
 	 * @param array                  $itemParams: parameters for journal details request
-	 * @param string                 $itemParamString: $itemParams as string
 	 * @return string                $itemTable: table with journal details as HTML-snippet
 	 */
-	function createItemTable ($journal, $listParams, $listParamString, $itemParam, $itemParamString) {
+	function createItemTable ($journal, $listParams, $itemParam) {
 		$itemDetails = array();
 
 		//traverse xml for creating detailed item table 
