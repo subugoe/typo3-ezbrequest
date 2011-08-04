@@ -72,18 +72,9 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 
 			$headline = '<img alt="' . $journal->journal_color['color'] . '" width="30px" height="12" src="typo3conf/ext/ezbrequest/res/' . $journal->journal_color['color'] . '.gif" />' . "\n";
 
-			// Alte Parameter sichern
-			$oldATagParams = $GLOBALS['TSFE']->ATagParams;
-			$GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
-
-
-			$headline .= $this->pi_linkToPage(htmlspecialchars($journal->title), $this->conf['ezbJourURL'] . '?' . str_replace('xmloutput=1', 'xmloutput=0', $_SERVER['QUERY_STRING']), '_blank', array());
+			$headline .= '<a href="' . $this->conf['ezbJourURL'] . '?' . '?' . str_replace('xmloutput=1', 'xmloutput=0', $_SERVER['QUERY_STRING']) . ' target="_blank">' . htmlspecialchars($journal->title) . '</a>';
 			// gesicherten Status wiederherstellen:                                                                                                                 
-			$GLOBALS['TSFE']->ATagParams = $oldATagParams;
-			unset($oldATagParams);
-
 			$itemTable = $this->createItemTable($journal, $listParams, $itemParams);
-
 			
 			$this->templateCode = $this->cObj->fileResource($this->conf['itemViewTemplate']);
 			$templateMarker = "###TEMPLATE###";
