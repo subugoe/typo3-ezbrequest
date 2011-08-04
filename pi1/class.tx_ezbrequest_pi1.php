@@ -295,7 +295,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			}
 		}
 		else {
-			$this->baseParams['bibid'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
+			$this->baseParams['client_ip'] = t3lib_div::getIndpEnv('REMOTE_ADDR');
 		}
 		
 	}
