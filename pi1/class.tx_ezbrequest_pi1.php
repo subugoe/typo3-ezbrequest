@@ -100,7 +100,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 
 			$journal = $xml->ezb_detail_about_journal->journal;
 			$institut = $this->pi_getLL('institut');
-			$institut .= (string)$xml->library ? (string)$xml->library : $this->pi_getLL('none') . '; ';
+			$institut .= ((string)$xml->library ? (string)$xml->library : $this->pi_getLL('none')) . '; ';
 
 			$headline = '<img alt="' . $journal->journal_color['color'] . '" width="30px" height="12" src="typo3conf/ext/ezbrequest/res/' . $journal->journal_color['color'] . '.gif" />' . "\n";
 
@@ -154,7 +154,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				//fetch search results
 				$xml = simplexml_load_file($this->conf['ezbSearchURL'] . '?' . $listParamString . '&hits_per_page=100000');
 				$institut = $this->pi_getLL('institut');
-				$institut .= (string)$xml->library ? (string)$xml->library : $this->pi_getLL('none') . '; ';
+				$institut .= ((string)$xml->library ? (string)$xml->library : $this->pi_getLL('none')) . '; ';
 
 				$result = $xml->ezb_alphabetical_list_searchresult;
 				$hits = (string)$result->search_count;
@@ -177,7 +177,7 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 
 				$xml = simplexml_load_file($URL);
 				$institut = $this->pi_getLL('institut');
-				$institut .= (string)$xml->library ? (string)$xml->library : $this->pi_getLL('none') . '; ';
+				$institut .= ((string)$xml->library ? (string)$xml->library : $this->pi_getLL('none')) . '; ';
 
 				//find current page
 
