@@ -405,16 +405,14 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		if ($journal->detail->E_ISSNs->E_ISSN || $journal->detail->P_ISSNs->P_ISSN) {
 			$values = array();
 			foreach ($journal->detail->E_ISSNs->E_ISSN as $eissn) {
-				$values[] = $eissn . ' (electronic)';
+				$values[] = $eissn . ' (' . $this->pi_getLL('electronic') . ')';
 			}
 
 			foreach ($journal->detail->P_ISSNs->P_ISSN as $pissn) {
-				$values[] = $pissn . ' (print)';
+				$values[] = $pissn . ' (' . $this->pi_getLL('printed') . ')';
 			}
 
 			$itemDetails['ISSN'] = implode(', ', $values);
-
-
 		}
 		
 		if ($journal->detail->ZDB_number) {
@@ -444,7 +442,6 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		}
 
 		if ($journal->detail->fulltext) {
-
 			/* Alte Parameter sichern */
 			$oldATagParams = $GLOBALS['TSFE']->ATagParams;
 			$GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
