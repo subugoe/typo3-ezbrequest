@@ -389,11 +389,11 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		if ($journal->detail->E_ISSNs->E_ISSN || $journal->detail->P_ISSNs->P_ISSN) {
 			$values = array();
 			foreach ($journal->detail->E_ISSNs->E_ISSN as $eissn) {
-				$values[] = $eissn . '(electronic)';
+				$values[] = $eissn . ' (electronic)';
 			}
 
 			foreach ($journal->detail->P_ISSNs->P_ISSN as $pissn) {
-				$values[] = $pissn . '(print)';
+				$values[] = $pissn . ' (print)';
 			}
 
 			$itemDetails['ISSN'] = implode(', ', $values);
@@ -409,24 +409,22 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			// gesicherten Status wiederherstellen:
 			$GLOBALS['TSFE']->ATagParams = $oldATagParams;
 			unset($oldATagParams);
-
-			$moreValues = "";
 		}
 
 		if ($journal->detail->subjects->subject) {
+			$subjects = Array();
 			foreach ($journal->detail->subjects->subject as $subject) {
-				$moreValues .= $subject . '; ';
+				$subjects[] = (string)$subject;
 			}
-			$itemDetails['subject'] = $moreValues;
-			$moreValues = "";
+			$itemDetails['subject'] = implode('; ', $subjects);
 		}
 
 		if ($journal->detail->keywords->keyword) {
+			$keywords = Array();
 			foreach ($journal->detail->keywords->keyword as $keyword) {
-				$moreValues .= $keyword . '; ';
+				$keywords[] = (string)$keyword;
 			}
-			$itemDetails['keyword'] = $moreValues;
-			$moreValues = "";
+			$itemDetails['keyword'] = implode('; ', $keywords);
 		}
 
 		if ($journal->detail->fulltext) {
@@ -443,12 +441,12 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		}
 		if ($journal->detail->homepages->homepage) {
 			$extParam = array();
+			$moreValues = "";
 			foreach ($journal->detail->homepages->homepage as $homepage) {
 				/* Alte Parameter sichern */
 				$oldATagParams = $GLOBALS['TSFE']->ATagParams;
 
 				$GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
-
 
 				if (strlen($homepage) > 50) {
 					$moreValues .= $this->pi_linkToPage(substr($homepage, 0, 50) . '...', $homepage, '_blank', $empty) . '<br/>';
@@ -462,10 +460,10 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				unset($oldATagParams);
 			}
 			$itemDetails['homepage'] = $moreValues;
-			$moreValues = "";
 		}
 
 		if ($journal->detail->first_fulltext_issue) {
+			$moreValues = "";
 			if ($journal->detail->first_fulltext_issue->first_volume) {
 				$moreValues .= 'Vol. ' . $journal->detail->first_fulltext_issue->first_volume;
 			}
@@ -476,10 +474,10 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 				$moreValues .= ' (' . $journal->detail->first_fulltext_issue->first_date . ')';
 			};
 			$itemDetails['first_fulltext_issue'] = $moreValues;
-			$moreValues = "";
 		}
 
 		if ($journal->detail->last_fulltext_issue) {
+			$moreValues = "";
 			if ($journal->detail->last_fulltext_issue->last_volume) {
 				$moreValues .= 'Vol. ' . $journal->detail->last_fulltext_issue->last_volume;
 			}
