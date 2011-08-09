@@ -384,8 +384,24 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 	function createItemTable ($journal, $listParams, $itemParam) {
 		$itemDetails = array();
 
-		//traverse xml for creating detailed item table 
+		//traverse xml for creating detailed item table
+		if ($journal->periods->period) {
+			$periods = Array("<ul class='ezbrequest-periods'>\n");
+			foreach ($journal->periods->period as $period) {
+				$label = 'Link';
+				if ($period->label) {
+					$label = (string)$period->label;
+				}
+				$link = rawurldecode((string)$period->warpto_link['url']);
+				$image = '<img alt="' . $period->journal_color['color'] . '" width="30px" height="12" src="typo3conf/ext/ezbrequest/res/' . $period->journal_color['color'] . '.gif" />' . "\n";
+				$periods[] = '<li>' . '<a href="' . $link . '" class="external-link-new-window" target="_blank">' . $image . ' ' . $label . "</a></li>\n";
+			}
+			$periods[] = "</ul>\n";
+			$itemDetails['availability'] = implode('', $periods);
+		}
+
 		$itemDetails["publisher"] = $journal->detail->publisher;
+		
 		if ($journal->detail->E_ISSNs->E_ISSN || $journal->detail->P_ISSNs->P_ISSN) {
 			$values = array();
 			foreach ($journal->detail->E_ISSNs->E_ISSN as $eissn) {
