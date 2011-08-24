@@ -402,17 +402,21 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 
 		$itemDetails["publisher"] = $journal->detail->publisher;
 		
-		if ($journal->detail->E_ISSNs->E_ISSN || $journal->detail->P_ISSNs->P_ISSN) {
-			$values = array();
+		$ISSNs = Array();
+		if ($journal->detail->E_ISSNs->E_ISSN) {
 			foreach ($journal->detail->E_ISSNs->E_ISSN as $eissn) {
-				$values[] = $eissn . ' (' . $this->pi_getLL('electronic') . ')';
+				$ISSNs[] = $eissn . ' (' . $this->pi_getLL('electronic') . ')';
 			}
+		}
 
+		if ($journal->detail->P_ISSNs->P_ISSN) {
 			foreach ($journal->detail->P_ISSNs->P_ISSN as $pissn) {
-				$values[] = $pissn . ' (' . $this->pi_getLL('printed') . ')';
+				$ISSNs[] = $pissn . ' (' . $this->pi_getLL('printed') . ')';
 			}
+		}
 
-			$itemDetails['ISSN'] = implode(', ', $values);
+		if (count($ISSNs) > 0) {
+			$itemDetails['ISSN'] = implode(', ', $ISSNs);
 		}
 		
 		if ($journal->detail->ZDB_number) {
