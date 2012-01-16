@@ -190,10 +190,8 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		$this->pi_initPIflexForm();
 
 		//set css
-		if ($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'css', 'sDEF')) {
-			$this->conf['css'] = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'css', 'sDEF');
-			$GLOBALS['TSFE']->additionalHeaderData[1] = '<link rel="stylesheet" type="text/css" href="' . $this->conf['css'] . '" media="screen" />';
-		}
+		$CSSURL = t3lib_extMgm::siteRelPath('ezbrequest') . 'res/ezb.css';
+		$GLOBALS['TSFE']->additionalHeaderData[] = '<link rel="stylesheet" type="text/css" href="' . $CSSURL . '" media="screen" />';
 
 		//set js
 		//$GLOBALS['TSFE']->additionalHeaderData[2] = '<script type="text/javascript" href="fileadmin/js/ezb.js" />';

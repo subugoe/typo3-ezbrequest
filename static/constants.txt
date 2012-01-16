@@ -17,10 +17,7 @@ plugin.tx_ezbrequest_pi1 {
 
     # cat=EZB request/notation/0 ; type=string; label= EZB-Code for the Subject.
     notation = SA-SP
-    
-    # cat=EZB request/file/0 ; type=string; label=Path to css-file.
-    css  = 
-    
+
     # cat=EZB request/file/1; type=string; label=Path to template for list view
     listViewTemplate = EXT:ezbrequest/pi1/list_view.htm
 

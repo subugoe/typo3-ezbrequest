@@ -31,17 +31,8 @@
              <size>30</size>
             </config>
            </TCEforms>
-          </itemTarget>
-          <css>
-           <TCEforms>
-            <label>LLL:EXT:ezbrequest/locallang_db.xml:tt_content.pi_flexform.css</label>
-            <config>
-             <type>input</type>
-             <size>30</size>
-            </config>
-           </TCEforms>
-          </css>
-         <bibid>
+     </itemTarget>
+     <bibid>
            <TCEforms>
             <label>LLL:EXT:ezbrequest/locallang_db.xml:tt_content.pi_flexform.bibid</label>
             <config>
@@ -49,7 +40,7 @@
              <size>30</size>
             </config>
            </TCEforms>
-          </bibid>
+    </bibid>
 	</el>
       </ROOT>
 </T3DataStructure>

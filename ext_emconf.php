@@ -1,13 +1,13 @@
 <?php
 
 ########################################################################
-# Extension Manager/Repository config file for ext: "ezbrequest"
+# Extension Manager/Repository config file for ext "ezbrequest".
 #
-# Auto generated 03-09-2008 15:01
+# Auto generated 16-01-2012 15:20
 #
 # Manual updates:
-# Only the data in the array - anything else is removed by next write.
-# "version" and "dependencies" must not be touched!
+# Only the data in the array - everything else is removed by next
+# writing. "version" and "dependencies" must not be touched!
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '0.2.0',
+	'version' => '0.3.0',
 	'constraints' => array(
 		'depends' => array(
 		),
@@ -38,7 +38,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:21:{s:9:"ChangeLog";s:4:"0031";s:10:"README.txt";s:4:"ee2d";s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"2f13";s:14:"ext_tables.php";s:4:"34cb";s:12:"flexform.xml";s:4:"cd99";s:13:"locallang.xml";s:4:"487b";s:16:"locallang_db.xml";s:4:"77f6";s:13:"res/green.gif";s:4:"1365";s:11:"res/red.gif";s:4:"1e77";s:17:"res/redyellow.gif";s:4:"eb41";s:15:"res/unknown.gif";s:4:"e26a";s:14:"res/yellow.gif";s:4:"733c";s:19:"doc/wizard_form.dat";s:4:"fb20";s:20:"doc/wizard_form.html";s:4:"db59";s:31:"pi1/class.tx_ezbrequest_pi1.php";s:4:"bfc4";s:17:"pi1/item_view.htm";s:4:"0405";s:17:"pi1/list_view.htm";s:4:"6931";s:17:"pi1/locallang.xml";s:4:"f940";s:20:"static/constants.txt";s:4:"3c25";s:16:"static/setup.txt";s:4:"ddc6";}',
+	'_md5_values_when_last_written' => 'a:18:{s:9:"ChangeLog";s:4:"26c7";s:12:"ext_icon.gif";s:4:"1bdc";s:17:"ext_localconf.php";s:4:"2f13";s:14:"ext_tables.php";s:4:"0de3";s:12:"flexform.xml";s:4:"b198";s:16:"locallang_db.xml";s:4:"7a06";s:31:"pi1/class.tx_ezbrequest_pi1.php";s:4:"041f";s:17:"pi1/item_view.htm";s:4:"f9ea";s:17:"pi1/list_view.htm";s:4:"a9b0";s:17:"pi1/locallang.xml";s:4:"d05d";s:11:"res/ezb.css";s:4:"f40f";s:13:"res/green.gif";s:4:"1365";s:11:"res/red.gif";s:4:"1e77";s:15:"res/unknown.gif";s:4:"e26a";s:14:"res/yellow.gif";s:4:"733c";s:18:"res/yellow_red.gif";s:4:"eb41";s:20:"static/constants.txt";s:4:"22f4";s:16:"static/setup.txt";s:4:"97f7";}',
 	'suggests' => array(
 	),
 );

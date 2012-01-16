@@ -1,5 +1,10 @@
 (add new changes on top of this file)
 
+2012-01-16 Sven-S. Porst <porst@sub.uni-goettingen.de>
+
+	* automatically insert basic CSS to the page to reduce per site configuration
+
+
 2011-08-10 Sven-S. Porst <porst@sub.uni-goettingen.de>
 	
 	* work with setups for multiple subject areas
