@@ -5,32 +5,6 @@
 		<description>Language labels for database tables/fields belonging to extension 'ezbrequest'</description>
 	</meta>
 	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="title">Titel: </label>
-			<label index="availability">Verfügbarkeit: </label>
-			<label index="publisher">Verlag: </label>
-			<label index="ISSN">ISSN: </label>
-			<label index="electronic">elektronisch</label>
-			<label index="printed">gedruckt</label>
-			<label index="subject">Fachgruppen: </label>
-			<label index="keyword">Schlagworte: </label>
-			<label index="ZDB_number">ZDB-Nummer: </label>
-			<label index="fulltext">Zugang: </label>
-			<label index="first_fulltext_issue">erste Volltextausgabe: </label>
-			<label index="last_fulltext_issue">letzte Volltextausgabe: </label>
-			<label index="homepage">Homepage: </label>
-			<label index="appearence">Erscheinungform: </label>
-			<label index="costs">Kosten: </label>
-			<label index="fulltext_articles">Volltextartikel von/bis: </label>
-			<label index="remarks">Bemerkung: </label>
-			<label index="noHits">Kein Treffer.</label>
-			<label index="institut">Ihre Institution: </label>
-			<label index="none">keine</label>
-			<label index="ipText">Ihre IP: </label>
-			<label index="hitText"> Treffer</label>
-			<label index="listLink">Zurück zur Zeitschriftenliste</label>
-		</languageKey>
-
 		<languageKey index="en" type="array">
 			<label index="title">Title: </label>
 			<label index="availability">Availability: </label>
