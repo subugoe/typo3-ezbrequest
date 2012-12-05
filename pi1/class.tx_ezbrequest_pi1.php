@@ -116,7 +116,6 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 
 				$journalNode = $result;
 
-				$current = (string)$xml->page_vars->sc['value'];
 			}
 			else {
 				//fetch journal list
@@ -153,7 +152,6 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			$journalList = $this->createList($journalNode, $listParams, $itemParams);
 			$this->templateCode = $this->cObj->fileResource($this->conf['listViewTemplate']);
 			$templateMarker = "###TEMPLATE###";
-			$template = array();
 			$template = $this->cObj->getSubpart($this->templateCode, $templateMarker);
 
 			// create the content by replacing the marker in the template
@@ -218,8 +216,8 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 		$itemTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'itemTarget', 'sDEF');
 		$this->conf['itemTarget'] = $itemTarget ? $itemTarget : $this->conf['currentPage'];
 
-		$itemTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'bibid', 'sDEF');
-		$this->conf['bibid'] = $itemTarget ? $itemTarget : $this->conf['bibid'];
+		$bibID = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'bibid', 'sDEF');
+		$this->conf['bibid'] = $bibID ? $bibID : $this->conf['bibid'];
 
 
 		//set base parameter
@@ -457,7 +455,6 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			unset($oldATagParams);
 		}
 		if ($journal->detail->homepages->homepage) {
-			$extParam = array();
 			$moreValues = "";
 			foreach ($journal->detail->homepages->homepage as $homepage) {
 				/* Alte Parameter sichern */
