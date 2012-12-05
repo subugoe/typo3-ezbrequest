@@ -338,21 +338,23 @@ class tx_ezbrequest_pi1 extends tslib_pibase {
 			$journalLinks .= '<ul class="firstlist">' . "\n" . $firstList . "</ul>\n";
 		}
 
-		$journalLinks .= '<ul>';
-		foreach ($journals->journals->journal as $journal) {
-			$access = $journal->journal_color['color'];
-			$image = '<img alt="' . $access . '" width="30px" height="12" src="typo3conf/ext/ezbrequest/res/' . $access . '.gif" />';
+		if ($journals->journals) {
+			$journalLinks .= '<ul>';
+			foreach ($journals->journals->journal as $journal) {
+				$access = $journal->journal_color['color'];
+				$image = '<img alt="' . $access . '" width="30px" height="12" src="typo3conf/ext/ezbrequest/res/' . $access . '.gif" />';
 
-			$itemParams["jour_id"] = (string)$journal['jourid'];
-			$itemParams["xmloutput"] = "0";
-			$journalLinks .= '<li><span class="ampel"><a href="' . $this->conf['ezbItemURL'] . '?' . $this->paramString($itemParams) . '">'. $image . '</span>';
+				$itemParams["jour_id"] = (string)$journal['jourid'];
+				$itemParams["xmloutput"] = "0";
+				$journalLinks .= '<li><span class="ampel"><a href="' . $this->conf['ezbItemURL'] . '?' . $this->paramString($itemParams) . '">'. $image . '</span>';
 
-			$title = (string)$journal->title;
-			$itemParams["xmloutput"] = "1";
-			$journalLinks .= $this->pi_linkToPage(htmlspecialchars($title), $this->conf['itemTarget'], '', $itemParams) . "</li>\n";
+				$title = (string)$journal->title;
+				$itemParams["xmloutput"] = "1";
+				$journalLinks .= $this->pi_linkToPage(htmlspecialchars($title), $this->conf['itemTarget'], '', $itemParams) . "</li>\n";
+			}
+			$journalLinks .= "</ul>\n";
 		}
-		$journalLinks .= "</ul>\n";
-
+		
 		$next = $node->next_fifty;
 		if ($next != null) {
 			$nextList = '';
