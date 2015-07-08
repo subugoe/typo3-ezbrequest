@@ -1,0 +1,76 @@
+.tx-ezbrequest-pi1 a:link {
+  text-decoration: none;
+  font-weight: normal; }
+  .tx-ezbrequest-pi1 a:link:hover {
+    text-decoration: underline; }
+.tx-ezbrequest-pi1 #journalNavi {
+  float: left;
+  width: 55%;
+  margin-bottom: 20px;
+  padding: 1.5em 0 0 0; }
+  .tx-ezbrequest-pi1 #journalNavi .act {
+    font-weight: bold;
+    padding: 0 3px; }
+  .tx-ezbrequest-pi1 #journalNavi .alphabetMenu li {
+    display: inline; }
+  .tx-ezbrequest-pi1 #journalNavi a:link {
+    padding: 0 3px; }
+.tx-ezbrequest-pi1 ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; }
+.tx-ezbrequest-pi1 fieldset {
+  margin-right: 10px;
+  text-align: right; }
+
+.tx-ezbrequest-pi1 #navi.itemView {
+  display: none; }
+
+.tx-ezbrequest-pi1 #ezb_search_form fieldset {
+  border: 0 none;
+  text-align: right; }
+
+.tx-ezbrequest-pi1 #ezbSearchForm {
+  display: none; }
+
+.tx-ezbrequest-pi1 #journalList li {
+  position: relative;
+  margin-left: 50px; }
+
+.tx-ezbrequest-pi1 #journalList li span.ampel {
+  position: absolute;
+  left: -50px;
+  top: 0.2em; }
+
+.tx-ezbrequest-pi1 ul.firstlist {
+  margin-bottom: 1em; }
+
+.tx-ezbrequest-pi1 ul.nextlist {
+  margin-top: 1em; }
+
+.tx-ezbrequest-pi1 #journalList {
+  clear: left; }
+
+.tx-ezbrequest-pi1 #journalList a img {
+  margin-right: 20px;
+  border: 0 none; }
+
+.tx-ezbrequest-pi1 #jourItem .title {
+  display: block;
+  position: relative;
+  margin: 0 0 0.5em 50px;
+  text-indent: -50px;
+  font-size: 166%;
+  line-height: 125%;
+  font-weight: bold; }
+
+.tx-ezbrequest-pi1 table td {
+  vertical-align: top; }
+
+.tx-ezbrequest-pi1 table td b {
+  display: block;
+  text-align: right;
+  margin-right: 20px;
+  width: 180px; }
+
+/*# sourceMappingURL=ezb.css.map */

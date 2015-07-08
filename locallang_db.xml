@@ -7,21 +7,26 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tt_content.list_type_pi1">ezbrequest</label>
-			<label index="tt_content.pi_flexform.listTarget">Seiten-ID für die Listenanzeige</label> 
-                        <label index="tt_content.pi_flexform.itemTarget">Seiten-ID für die Detailanzeige</label>
-		  	<label index="tt_content.pi_flexform.notation">EZB-Kürzel für das Fachgebiet</label>
-			<label index="tt_content.pi_flexform.bibid">EZB-ID der Bibliothek, deren Bestände angezeigt werden. (Ohne Eingabe wird versucht, die Bibliothek anhand der IP Adresse des Nutzers zu ermitteln, mit 'NATLI' werden Nationallizenzen angezeigt.)</label>
+			<label index="tt_content.pi_flexform.listTarget">Seiten-ID für die Listenanzeige</label>
+			<label index="tt_content.pi_flexform.itemTarget">Seiten-ID für die Detailanzeige</label>
+			<label index="tt_content.pi_flexform.notation">EZB-Kürzel für das Fachgebiet</label>
+			<label index="tt_content.pi_flexform.bibid">EZB-ID der Bibliothek, deren Bestände angezeigt werden. (Ohne
+				Eingabe wird versucht, die Bibliothek anhand der IP Adresse des Nutzers zu ermitteln, mit 'NATLI' werden
+				Nationallizenzen angezeigt.)
+			</label>
 			<label index="tt_content.pi_flexform.css">Pfad zum Stylesheet (z.B. fileadmin/...)</label>
-				
+
 		</languageKey>
-		
-		
+
+
 		<languageKey index="en" type="array">
 			<label index="tt_content.list_type_pi1">ezbrequest</label>
-                        <label index="tt_content.pi_flexform.listTarget">Site-ID for the list view</label>
-                        <label index="tt_content.pi_flexform.listTarget">Site-ID for detailed view</label>
+			<label index="tt_content.pi_flexform.listTarget">Site-ID for the list view</label>
+			<label index="tt_content.pi_flexform.listTarget">Site-ID for detailed view</label>
 			<label index="tt_content.pi_flexform.notation">EZB-Code for the Subject</label>
-			<label index="tt_content.pi_flexform.bibid">EZB-ID for the library to query for (Blank automatically determines the library based on the IP address, 'NATLI' lists Nationallizenzen.)</label>
+			<label index="tt_content.pi_flexform.bibid">EZB-ID for the library to query for (Blank automatically
+				determines the library based on the IP address, 'NATLI' lists Nationallizenzen.)
+			</label>
 			<label index="tt_content.pi_flexform.css">Path to Stylesheet (z.B. fileadmin/...)</label>
 
 		</languageKey>
