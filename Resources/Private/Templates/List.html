@@ -1,0 +1,33 @@
+<div id="navi">
+	<div id="journalNavi">
+		<ul class='alphabetMenu'>
+			{journalNavigation -> f:format.raw()}
+		</ul>
+	</div>
+
+	<div id="ezb_search_form">
+		<form action="" method="get">
+			<fieldset>
+				<input type="hidden" name="L" value="{language.id}"/>
+				<input type="text" class="iputStartSmall" name="jq_term1" value="{searchTerm}"/>
+				<input type="submit" class="submStartSmall" value="{f:translate(key: 'LLL:EXT:ezbrequest/Resources/Private/Language/locallang.xml:search')}"/>
+				<input type="hidden" name="jq_type1" value="KT"/>
+				<input type="hidden" name="notation" value="{notation}"/>
+				<input type="hidden" name="selected_colors[]" value="1"/>
+				<input type="hidden" name="selected_colors[]" value="2"/>
+				<input type="hidden" name="selected_colors[]" value="4"/>
+				<input type="hidden" name="lang" value="{language.text}"/>
+				<input type="hidden" name="client_ip" value="{ipAddress}"/>
+				<input type="hidden" name="xmloutput" value="1"/>
+			</fieldset>
+		</form>
+	</div>
+</div>
+<div id="journalList">
+	{journalList -> f:format.raw()}
+</div>
+<div>
+	<h3 class="notify">Information:</h3>
+	<span class="info"><f:translate key="LLL:EXT:ezbrequest/Resources/Private/Language/locallang.xml:institut" /> {institute}</span>
+	<span class="info"><f:translate key="LLL:EXT:ezbrequest/Resources/Private/Language/locallang.xml:ipText" /> {ipAddress}</span>
+</div>

@@ -1,0 +1,38 @@
+<div id="navi" class="itemView">
+	<div id="journalNavi"></div>
+	<div id="ezbSearchForm">
+		<form action="" method="get">
+			<fieldset>
+				<input type="hidden" name="lang" value="{language.id}"/>
+				<label for="ezbSearchTerm" class="hidden">SearchTerm</label>
+				<input type="text" class="iputStartSmall" name="jq_term1" id="ezbSearchTerm" value=""/>
+				<label for="ezbSubmit" class="hidden">Submit</label>
+				<input type="submit" name="submit" id="ezbSubmit" class="submStartSmall" value="Suche"/>
+				<input type="hidden" name="jq_type1" value="KT"/>
+				<input type="hidden" name="notation" value="{notation}"/>
+				<input type="hidden" name="selected_colors" value="7"/>
+				<input type="hidden" name="client_ip" value="{userIp}"/>
+				<input type="hidden" name="lang" value="{language.text}"/>
+
+				<input type="hidden" name="xmloutput" value="1"/>
+			</fieldset>
+		</form>
+	</div>
+</div>
+
+
+<div class="jourItem">
+	<h1 class="title">
+		<f:image src="typo3conf/ext/ezbrequest/Resources/Public/Images/{access}.gif" alt="{access}" />
+		<f:link.external uri="{linkUri}">{headline}</f:link.external>
+	</h1>
+
+	<table class="ezbrequest_itemtable">
+		<f:for each="{journalItem}" as="journal" key="label">
+			<tr>
+				<td class="ezbrequest_itemtable-key"><f:translate key="LLL:EXT:ezbrequest/Resources/Private/Language/locallang.xml:{label}" /></td>
+				<td>{journal -> f:format.raw()}</td>
+			</tr>
+		</f:for>
+	</table>
+</div>
