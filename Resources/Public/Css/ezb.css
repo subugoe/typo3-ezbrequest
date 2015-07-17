@@ -22,12 +22,25 @@
 .tx-ezbrequest-pi1 fieldset {
   margin-right: 10px;
   text-align: right; }
+.tx-ezbrequest-pi1 .jourItem .title {
+  display: block;
+  position: relative;
+  margin: 0 0 0.5em 50px;
+  text-indent: -50px;
+  font-size: 166%;
+  line-height: 125%;
+  font-weight: bold; }
+.tx-ezbrequest-pi1 .ezbrequest_itemtable-key {
+  display: block;
+  text-align: right;
+  margin-right: 20px;
+  width: 180px; }
 
 .tx-ezbrequest-pi1 #navi.itemView {
   display: none; }
 
 .tx-ezbrequest-pi1 #ezb_search_form fieldset {
-  border: 0 none;
+  border: 0;
   text-align: right; }
 
 .tx-ezbrequest-pi1 #ezbSearchForm {
@@ -53,24 +66,9 @@
 
 .tx-ezbrequest-pi1 #journalList a img {
   margin-right: 20px;
-  border: 0 none; }
-
-.tx-ezbrequest-pi1 #jourItem .title {
-  display: block;
-  position: relative;
-  margin: 0 0 0.5em 50px;
-  text-indent: -50px;
-  font-size: 166%;
-  line-height: 125%;
-  font-weight: bold; }
+  border: 0; }
 
 .tx-ezbrequest-pi1 table td {
   vertical-align: top; }
-
-.tx-ezbrequest-pi1 table td b {
-  display: block;
-  text-align: right;
-  margin-right: 20px;
-  width: 180px; }
 
 /*# sourceMappingURL=ezb.css.map */
