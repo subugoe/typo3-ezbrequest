@@ -23,6 +23,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
+use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /**
  * Plugin 'ezbrequest' for the 'ezbrequest' extension.
  */
@@ -76,7 +80,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         $listParams = $this->baseParams;
         $listParams['notation'] = $this->conf['notation'];
-        $listParams = array_merge($listParams, \TYPO3\CMS\Core\Utility\GeneralUtility::_GET());
+        $listParams = array_merge($listParams, GeneralUtility::_GET());
 
         // overwrite language setting (for language switch)
         $listParams['lang'] = $GLOBALS['TSFE']->lang;
@@ -84,7 +88,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $itemParams = $this->baseParams;
         $itemParams['xmloutput'] = '0';
 
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('jour_id')) {
+        if (GeneralUtility::_GET('jour_id')) {
             $content = $this->getDetailView();
         } else {
             $content = $this->getListView($listParams, $itemParams);
@@ -127,7 +131,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
         $pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-        $pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Css/ezb.css');
+        $pageRenderer->addCssFile(ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Css/ezb.css');
         return $this;
     }
 
@@ -139,8 +143,8 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $xml = \simplexml_load_file($this->conf['ezbItemURL'] . '?' . $_SERVER['QUERY_STRING']);
 
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $fluidTemplate */
-        $fluidTemplate = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-        $fluidTemplate->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/Single.html');
+        $fluidTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+        $fluidTemplate->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/Single.html');
 
         $journal = $xml->ezb_detail_about_journal->journal;
         $itemTable = $this->createItems($journal);
@@ -150,8 +154,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'access' => $journal->journal_color['color'],
             'notation' => $this->conf['notation'],
             'userIp' => $this->baseParams['client_ip'],
-            'linkUri' => $this->conf['ezbJourURL'] . '?' . '?' . str_replace('xmloutput=1', 'xmloutput=0',
-                    $_SERVER['QUERY_STRING']),
+            'linkUri' => $this->conf['ezbJourURL'] . '?' . '?' . str_replace('xmloutput=1', 'xmloutput=0', $_SERVER['QUERY_STRING']),
             'journalItem' => $itemTable,
             'language' => [
                 'text' => $GLOBALS['TSFE']->lang,
@@ -198,10 +201,10 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
 
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $fluidTemplate */
-        $fluidTemplate = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-        $fluidTemplate->setTemplatePathAndFilename(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/List.html');
+        $fluidTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
+        $fluidTemplate->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/List.html');
 
-        $search = empty(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('jq_term1')) ? false : true;
+        $search = empty(GeneralUtility::_GET('jq_term1')) ? false : true;
 
         $navi = '';
 
@@ -235,7 +238,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         if (($search) && isset($hits) && ($hits > 0)) {
-            $navi = '<span class="hits">' . $hits . ' ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('hitText',
+            $navi = '<span class="hits">' . $hits . ' ' . LocalizationUtility::translate('hitText',
                     'ezbrequest') . '</span> ' . $navi;
         }
 
@@ -248,7 +251,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'journalList' => $journalList,
             'journalNavigation' => $navi,
             'notation' => $this->conf['notation'],
-            'searchTerm' => \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('jq_term1'),
+            'searchTerm' => GeneralUtility::_GET('jq_term1'),
             'ipAddress' => $this->baseParams['client_ip'],
             'language' => [
                 'text' => $GLOBALS['TSFE']->lang,
@@ -329,7 +332,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function createList(\SimpleXMLElement $node, $itemParams)
     {
         $journals = $node->alphabetical_order;
-        $listParams = !empty(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('client_ip')) ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GET() : $this->baseParams;
+        $listParams = !empty(GeneralUtility::_GET('client_ip')) ? GeneralUtility::_GET() : $this->baseParams;
         $journalLinks = $this->getFirstLinkForList($node, $listParams);
         $journalLinks .= $this->getJournals($itemParams, $journals);
         $journalLinks .= $this->getNextLinkForList($node, $listParams);
@@ -369,10 +372,9 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $listParams['sc'] = (String)$firstlink['sc'];
                 $listParams['lc'] = (String)$firstlink['lc'];
                 $listParams['sindex'] = (String)$firstlink['sindex'];
-                $firstList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '',
-                        $listParams) . "</li>";
+                $firstList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '', $listParams) . '</li>';
             }
-            $journalLinks = '<ul class="firstlist">' . $firstList . "</ul>";
+            $journalLinks = '<ul class="firstlist">' . $firstList . '</ul>';
         }
         return $journalLinks;
     }
@@ -389,7 +391,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $journalLinks = '<ul>';
             foreach ($journals->journals->journal as $journal) {
                 $access = $journal->journal_color['color'];
-                $image = '<img alt="' . $access . '" class="journallist-image" src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $access . '.gif" />';
+                $image = '<img alt="' . $access . '" class="journallist-image" src="' . ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $access . '.gif" />';
 
                 $itemParams['jour_id'] = (string)$journal['jourid'];
                 $itemParams['xmloutput'] = "0";
@@ -397,8 +399,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
                 $title = htmlspecialchars((string)$journal->title);
                 $itemParams['xmloutput'] = '1';
-                $journalLinks .= $this->pi_linkToPage(htmlspecialchars_decode($title), $this->conf['itemTarget'], '',
-                        $itemParams) . "</li>";
+                $journalLinks .= $this->pi_linkToPage(htmlspecialchars_decode($title), $this->conf['itemTarget'], '', $itemParams) . '</li>';
             }
             $journalLinks .= '</ul>';
         }
@@ -421,10 +422,9 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $listParams['sc'] = (String)$nextlink['sc'];
                 $listParams['lc'] = (String)$nextlink['lc'];
                 $listParams['sindex'] = (String)$nextlink['sindex'];
-                $nextList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '',
-                        $listParams) . "</li>";
+                $nextList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '', $listParams) . '</li>';
             }
-            $journalLinks .= '<ul class="nextlist">' . $nextList . "</ul>";
+            $journalLinks .= '<ul class="nextlist">' . $nextList . '</ul>';
         }
         return $journalLinks;
     }
@@ -440,7 +440,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $this->baseParams['colors'] = 2;
             }
         } else {
-            $this->baseParams['client_ip'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR');
+            $this->baseParams['client_ip'] = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         }
         return $this;
     }
@@ -529,7 +529,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         if ($journal->detail->homepages->homepage) {
             foreach ($journal->detail->homepages->homepage as $homepage) {
-                // save old parameters @TODO did we have to do that?
+                // save old parameters @TODO do we have to do that?
                 $oldATagParams = $GLOBALS['TSFE']->ATagParams;
 
                 $GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
@@ -561,7 +561,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $oldATagParams = $GLOBALS['TSFE']->ATagParams;
             $GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
 
-            $moreValues = $this->pi_linkToPage(substr($journal->detail->fulltext, 0, 50) . '...',
+            $moreValues = $this->pi_linkToPage(substr($journal->detail->fulltext, 0, 50) . '…',
                 $journal->detail->fulltext, '_blank', '');
 
             // restore saved status @TODO why?
@@ -667,8 +667,8 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $label = (string)$period->label;
                 }
                 $link = rawurldecode((string)$period->warpto_link['url']);
-                $image = '<img alt="' . $period->journal_color['color'] . '" class="journallist-image" src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $period->journal_color['color'] . '.gif" />' . "\n";
-                $periods[] = '<li>' . '<a href="' . $link . '" class="external-link-new-window" target="_blank">' . $image . ' ' . $label . "</a></li>";
+                $image = '<img alt="' . $period->journal_color['color'] . '" class="journallist-image" src="' . ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $period->journal_color['color'] . '.gif" />' . PHP_EOL;
+                $periods[] = '<li>' . '<a href="' . $link . '" class="external-link-new-window" target="_blank">' . $image . ' ' . $label . '</a></li>';
             }
             $periods[] = '</ul>';
             $journals = implode('', $periods);
