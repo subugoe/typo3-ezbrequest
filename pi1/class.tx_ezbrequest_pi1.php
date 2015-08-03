@@ -389,7 +389,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $journalLinks = '<ul>';
             foreach ($journals->journals->journal as $journal) {
                 $access = $journal->journal_color['color'];
-                $image = '<img alt="' . $access . '" width="30px" height="12" src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $access . '.gif" />';
+                $image = '<img alt="' . $access . '" class="journallist-image" src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $access . '.gif" />';
 
                 $itemParams['jour_id'] = (string)$journal['jourid'];
                 $itemParams['xmloutput'] = "0";
@@ -667,7 +667,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                     $label = (string)$period->label;
                 }
                 $link = rawurldecode((string)$period->warpto_link['url']);
-                $image = '<img alt="' . $period->journal_color['color'] . '" width="30" height="12" src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $period->journal_color['color'] . '.gif" />' . "\n";
+                $image = '<img alt="' . $period->journal_color['color'] . '" class="journallist-image" src="' . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $period->journal_color['color'] . '.gif" />' . "\n";
                 $periods[] = '<li>' . '<a href="' . $link . '" class="external-link-new-window" target="_blank">' . $image . ' ' . $label . "</a></li>";
             }
             $periods[] = '</ul>';

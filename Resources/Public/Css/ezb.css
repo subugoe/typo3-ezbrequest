@@ -18,6 +18,9 @@
   list-style-type: none;
   padding: 0;
   margin: 0; }
+  .tx-ezbrequest-pi1 ul .journallist-image {
+    width: 30px;
+    height: 12px; }
 .tx-ezbrequest-pi1 fieldset {
   margin-right: 10px;
   text-align: right; }
