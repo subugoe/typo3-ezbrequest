@@ -130,7 +130,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function addCss()
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
-        $pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
+        $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
         $pageRenderer->addCssFile(ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Css/ezb.css');
         return $this;
     }
@@ -535,8 +535,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
 
                 if (strlen($homepage) > 50) {
-                    $moreValues .= $this->pi_linkToPage(substr($homepage, 0, 50) . '…', $homepage, '_blank',
-                            '') . '<br/>';
+                    $moreValues .= $this->pi_linkToPage(substr($homepage, 0, 50) . '…', $homepage, '_blank', '') . '<br/>';
                 } else {
                     $moreValues .= $this->pi_linkToPage($homepage, $homepage, '_blank', '') . '<br/>';
                 }
