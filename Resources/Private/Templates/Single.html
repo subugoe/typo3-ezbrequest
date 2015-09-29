@@ -29,7 +29,7 @@
 	<table class="ezbrequest_itemtable">
 		<f:for each="{journalItem}" as="journal" key="label">
 			<tr>
-				<td class="ezbrequest_itemtable-key"><f:translate key="LLL:EXT:ezbrequest/Resources/Private/Language/locallang.xml:{label}" /></td>
+				<td class="ezbrequest_itemtable-key"><f:translate key="{label}" extensionName="ezbrequest" /></td>
 				<td>{journal -> f:format.raw()}</td>
 			</tr>
 		</f:for>
