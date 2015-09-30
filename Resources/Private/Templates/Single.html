@@ -19,19 +19,11 @@
 	</div>
 </div>
 
-
 <div class="jourItem">
 	<h1 class="title">
-		<f:image src="typo3conf/ext/ezbrequest/Resources/Public/Images/{access}.gif" alt="{access}" />
-		<f:link.external uri="{linkUri}">{headline}</f:link.external>
+		<f:image src="<f:uri.resource path='Images/{access}.gif' extensionName='ezbrequest'/>" alt="{access}" />
+		<f:link.external uri="{linkUri}">{headline -> f:format.htmlentitiesDecode()}</f:link.external>
 	</h1>
 
-	<table class="ezbrequest_itemtable">
-		<f:for each="{journalItem}" as="journal" key="label">
-			<tr>
-				<td class="ezbrequest_itemtable-key"><f:translate key="{label}" extensionName="ezbrequest" /></td>
-				<td>{journal -> f:format.raw()}</td>
-			</tr>
-		</f:for>
-	</table>
+	<f:render partial="ItemTable" arguments="{_all}" />
 </div>
