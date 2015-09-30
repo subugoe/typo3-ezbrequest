@@ -23,9 +23,11 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \TYPO3\CMS\Core\Utility\GeneralUtility;
-use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Subugoe\Ezbrequest\Domain\Model\Journal;
+use Subugoe\Ezbrequest\Service\JournalService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
  * Plugin 'ezbrequest' for the 'ezbrequest' extension.
@@ -66,6 +68,11 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * @var array
      */
     protected $baseParams;
+
+    /**
+     * @var JournalService
+     */
+    protected $journalService;
 
     /**
      * The main method controls the data flow.
@@ -147,14 +154,18 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $fluidTemplate->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/Single.html');
 
         $journal = $xml->ezb_detail_about_journal->journal;
-        $itemTable = $this->createItems($journal);
+
+        $this->journalService = GeneralUtility::makeInstance(JournalService::class, $journal);
+
+        $itemTable = $this->createItems();
 
         $fluidTemplate->assignMultiple([
             'headline' => htmlspecialchars($journal->title),
             'access' => $journal->journal_color['color'],
             'notation' => $this->conf['notation'],
             'userIp' => $this->baseParams['client_ip'],
-            'linkUri' => $this->conf['ezbJourURL'] . '?' . '?' . str_replace('xmloutput=1', 'xmloutput=0', $_SERVER['QUERY_STRING']),
+            'linkUri' => $this->conf['ezbJourURL'] . '?' . '?' . str_replace('xmloutput=1', 'xmloutput=0',
+                    $_SERVER['QUERY_STRING']),
             'journalItem' => $itemTable,
             'language' => [
                 'text' => $GLOBALS['TSFE']->lang,
@@ -168,28 +179,29 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * Traverses xml node with journal details
      *
-     * @param \SimpleXMLElement $journal xml-node with journal details
-     * @return array array with journal details
+     * @return Journal
      */
-    protected function createItems($journal)
+    protected function createItems()
     {
-        $itemDetails = [];
+        /** @var Journal $issue */
+        $issue = GeneralUtility::makeInstance(Journal::class);
 
-        $itemDetails['availability'] = $this->getPeriods($journal);
-        $itemDetails['publisher'] = $journal->detail->publisher;
-        $itemDetails['ISSN'] = $this->getIssn($journal);
-        $itemDetails['ZDB_number'] = $this->getZdbNumber($journal);
-        $itemDetails['subject'] = $this->getSubject($journal);
-        $itemDetails['keyword'] = $this->getKeywords($journal);
-        $itemDetails['fulltext'] = $this->getFullText($journal);
-        $itemDetails['homepage'] = $this->getHomepage($journal);
-        $itemDetails['first_fulltext_issue'] = $this->getFirstFulltextIssue($journal);
-        $itemDetails['last_fulltext_issue'] = $this->getLastFulltextIssue($journal);
-        $itemDetails['appearence'] = $this->getAppearance($journal);
-        $itemDetails['costs'] = $this->getCosts($journal);
-        $itemDetails['remarks'] = $this->getRemarks($journal);
+        $issue
+            ->setAvailability($this->journalService->getPeriods())
+            ->setIssn($this->journalService->getIssn())
+            ->setPublisher($this->journalService->getPublisher())
+            ->setZdb($this->journalService->getZdbNumber())
+            ->setKeywords($this->journalService->getKeywords())
+            ->setFulltext($this->journalService->getFullText())
+            ->setHomepage($this->journalService->getHomepage())
+            ->setAppearance($this->journalService->getAppearance())
+            ->setCosts($this->journalService->getCosts())
+            ->setRemarks($this->journalService->getRemarks())
+            ->setSubject($this->journalService->getSubject())
+            ->setFirstFulltextIssue($this->journalService->getFirstFulltextIssue())
+            ->setLastFulltextIssue($this->journalService->getLastFulltextIssue());
 
-        return array_filter($itemDetails);
+        return $issue;
     }
 
     /**
@@ -331,6 +343,8 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function createList(\SimpleXMLElement $node, $itemParams)
     {
+        $this->journalService = GeneralUtility::makeInstance(JournalService::class);
+
         $journals = $node->alphabetical_order;
         $listParams = !empty(GeneralUtility::_GET('client_ip')) ? GeneralUtility::_GET() : $this->baseParams;
         $journalLinks = $this->getFirstLinkForList($node, $listParams);
@@ -372,7 +386,8 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $listParams['sc'] = (String)$firstlink['sc'];
                 $listParams['lc'] = (String)$firstlink['lc'];
                 $listParams['sindex'] = (String)$firstlink['sindex'];
-                $firstList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '', $listParams) . '</li>';
+                $firstList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '',
+                        $listParams) . '</li>';
             }
             $journalLinks = '<ul class="firstlist">' . $firstList . '</ul>';
         }
@@ -390,19 +405,25 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($journals->journals) {
             $journalLinks = '<ul>';
             foreach ($journals->journals->journal as $journal) {
-                $access = $journal->journal_color['color'];
-                $image = '<img alt="' . $access . '" class="journallist-image" src="' . ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $access . '.gif" />';
+                $item = [];
+                $item['access'] = $journal->journal_color['color'];
+                $item['jour_id'] = (string)$journal['jourid'];
+                $item['title'] = htmlspecialchars((string)$journal->title);
+                $item['parameter'] = $itemParams;
+
+                $image = '<img alt="' . $item['access'] . '" class="journallist-image" src="' . ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $item['access'] . '.gif" />';
 
                 $itemParams['jour_id'] = (string)$journal['jourid'];
-                $itemParams['xmloutput'] = "0";
+                $itemParams['xmloutput'] = '0';
                 $journalLinks .= '<li><span class="ampel"><a href="' . $this->conf['ezbItemURL'] . '?' . $this->paramString($itemParams) . '">' . $image . '</span>';
 
-                $title = htmlspecialchars((string)$journal->title);
                 $itemParams['xmloutput'] = '1';
-                $journalLinks .= $this->pi_linkToPage(htmlspecialchars_decode($title), $this->conf['itemTarget'], '', $itemParams) . '</li>';
+                $journalLinks .= $this->pi_linkToPage(htmlspecialchars_decode($item['title']),
+                        $this->conf['itemTarget'], '', $itemParams) . '</li>';
             }
             $journalLinks .= '</ul>';
         }
+
         return $journalLinks;
     }
 
@@ -422,10 +443,12 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $listParams['sc'] = (String)$nextlink['sc'];
                 $listParams['lc'] = (String)$nextlink['lc'];
                 $listParams['sindex'] = (String)$nextlink['sindex'];
-                $nextList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '', $listParams) . '</li>';
+                $nextList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '',
+                        $listParams) . '</li>';
             }
             $journalLinks .= '<ul class="nextlist">' . $nextList . '</ul>';
         }
+
         return $journalLinks;
     }
 
@@ -442,6 +465,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         } else {
             $this->baseParams['client_ip'] = GeneralUtility::getIndpEnv('REMOTE_ADDR');
         }
+
         return $this;
     }
 
@@ -452,6 +476,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         $listTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'listTarget', 'sDEF');
         $this->conf['listTarget'] = $listTarget ? $listTarget : $this->conf['currentPage'];
+
         return $this;
     }
 
@@ -462,6 +487,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         $itemTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'itemTarget', 'sDEF');
         $this->conf['itemTarget'] = $itemTarget ? $itemTarget : $this->conf['currentPage'];
+
         return $this;
     }
 
@@ -472,246 +498,8 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         $bibID = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'bibid', 'sDEF');
         $this->conf['bibid'] = $bibID ? $bibID : $this->conf['bibid'];
+
         return $this;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getFirstFulltextIssue($journal)
-    {
-        $moreValues = '';
-
-        if ($journal->detail->first_fulltext_issue) {
-            if ($journal->detail->first_fulltext_issue->first_volume) {
-                $moreValues .= 'Vol. ' . $journal->detail->first_fulltext_issue->first_volume;
-            }
-            if ($journal->detail->first_fulltext_issue->first_issue) {
-                $moreValues .= ', ' . $journal->detail->first_fulltext_issue->first_issue;
-            }
-            if ($journal->detail->first_fulltext_issue->first_date) {
-                $moreValues .= ' (' . $journal->detail->first_fulltext_issue->first_date . ')';
-            };
-        }
-        return $moreValues;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getLastFulltextIssue($journal)
-    {
-        $moreValues = '';
-
-        if ($journal->detail->last_fulltext_issue) {
-            if ($journal->detail->last_fulltext_issue->last_volume) {
-                $moreValues .= 'Vol. ' . $journal->detail->last_fulltext_issue->last_volume;
-            }
-            if ($journal->detail->last_fulltext_issue->last_issue) {
-                $moreValues .= ', ' . $journal->detail->last_fulltext_issue->last_issue;
-            }
-            if ($journal->detail->last_fulltext_issue->last_date) {
-                $moreValues .= ' (' . $journal->detail->last_fulltext_issue->last_date . ')';
-            };
-        }
-        return $moreValues;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getHomepage($journal)
-    {
-        $moreValues = '';
-
-        if ($journal->detail->homepages->homepage) {
-            foreach ($journal->detail->homepages->homepage as $homepage) {
-                // save old parameters @TODO do we have to do that?
-                $oldATagParams = $GLOBALS['TSFE']->ATagParams;
-
-                $GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
-
-                if (strlen($homepage) > 50) {
-                    $moreValues .= $this->pi_linkToPage(substr($homepage, 0, 50) . '…', $homepage, '_blank', '') . '<br/>';
-                } else {
-                    $moreValues .= $this->pi_linkToPage($homepage, $homepage, '_blank', '') . '<br/>';
-                }
-
-                $GLOBALS['TSFE']->ATagParams = $oldATagParams;
-                unset($oldATagParams);
-            }
-
-        }
-        return $moreValues;
-    }
-
-    /**
-     * @param $journal
-     * @return mixed
-     */
-    protected function getFullText($journal)
-    {
-        $moreValues = '';
-        if ($journal->detail->fulltext) {
-            // save old parameters @TODO did we have to do that?
-            $oldATagParams = $GLOBALS['TSFE']->ATagParams;
-            $GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
-
-            $moreValues = $this->pi_linkToPage(substr($journal->detail->fulltext, 0, 50) . '…',
-                $journal->detail->fulltext, '_blank', '');
-
-            // restore saved status @TODO why?
-            $GLOBALS['TSFE']->ATagParams = $oldATagParams;
-            unset($oldATagParams);
-        }
-        return $moreValues;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getKeywords($journal)
-    {
-        $keywords = '';
-        if ($journal->detail->keywords->keyword) {
-            $keywords = [];
-            foreach ($journal->detail->keywords->keyword as $keyword) {
-                $keywords[] = (string)$keyword;
-            }
-            $keywords = implode('; ', $keywords);
-        }
-
-        return $keywords;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getSubject($journal)
-    {
-        $subjects = '';
-        if ($journal->detail->subjects->subject) {
-            $subjects = [];
-            foreach ($journal->detail->subjects->subject as $subject) {
-                $subjects[] = (string)$subject;
-            }
-            $subjects = implode('; ', $subjects);
-        }
-        return $subjects;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getZdbNumber($journal)
-    {
-        $zdbNumber = '';
-        if ($journal->detail->ZDB_number) {
-
-            $oldATagParams = $GLOBALS['TSFE']->ATagParams;
-            $GLOBALS['TSFE']->ATagParams = ' class="external-link-new-window" ';
-            $zdbNumber = $this->pi_linkToPage($journal->detail->ZDB_number, $journal->detail->ZDB_number['url'],
-                '_blank', '');
-
-            $GLOBALS['TSFE']->ATagParams = $oldATagParams;
-            unset($oldATagParams);
-        }
-        return $zdbNumber;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getIssn($journal)
-    {
-        $issn = '';
-        $ISSNs = [];
-        if ($journal->detail->E_ISSNs->E_ISSN) {
-            foreach ($journal->detail->E_ISSNs->E_ISSN as $eissn) {
-                $ISSNs[] = $eissn . ' (' . $this->pi_getLL('electronic') . ')';
-            }
-        }
-
-        if ($journal->detail->P_ISSNs->P_ISSN) {
-            foreach ($journal->detail->P_ISSNs->P_ISSN as $pissn) {
-                $ISSNs[] = $pissn . ' (' . $this->pi_getLL('printed') . ')';
-            }
-        }
-
-        if (count($ISSNs) > 0) {
-            $issn = implode(', ', $ISSNs);
-        }
-        return $issn;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getPeriods($journal)
-    {
-        $journals = '';
-        if ($journal->periods->period) {
-            $periods = ["<ul class='ezbrequest-periods'>"];
-            foreach ($journal->periods->period as $period) {
-                $label = 'Link';
-                if ($period->label) {
-                    $label = (string)$period->label;
-                }
-                $link = rawurldecode((string)$period->warpto_link['url']);
-                $image = '<img alt="' . $period->journal_color['color'] . '" class="journallist-image" src="' . ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $period->journal_color['color'] . '.gif" />' . PHP_EOL;
-                $periods[] = '<li>' . '<a href="' . $link . '" class="external-link-new-window" target="_blank">' . $image . ' ' . $label . '</a></li>';
-            }
-            $periods[] = '</ul>';
-            $journals = implode('', $periods);
-        }
-        return $journals;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getAppearance($journal)
-    {
-        $appearance = '';
-        if ($journal->detail->appearence) {
-            $appearance = $journal->detail->appearence;
-        }
-        return $appearance;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getCosts($journal)
-    {
-        $costs = '';
-        if ($journal->detail->costs) {
-            $costs = $journal->detail->costs;
-        }
-        return $costs;
-    }
-
-    /**
-     * @param $journal
-     * @return string
-     */
-    protected function getRemarks($journal)
-    {
-        $remarks = '';
-        if ($journal->detail->remarks) {
-            $remarks = $journal->detail->remarks;
-        }
-        return $remarks;
     }
 
     /**
@@ -726,6 +514,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $URL = $this->conf['ezbSearchURL'] . '?' . $this->paramString($listParams, self::LINK_EZB_SEARCH_QUERY);
         }
         $xml = simplexml_load_file($URL);
+
         return $xml;
     }
 
