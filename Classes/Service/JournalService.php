@@ -82,7 +82,6 @@ class JournalService
         $periods = [];
         if ($this->journal->periods->period) {
             foreach ($this->journal->periods->period as $period) {
-
                 $link = [];
                 $link['label'] = $period->label ? (string)$period->label : 'Link';
                 $link['url'] = rawurldecode((string)$period->warpto_link['url']);
@@ -150,7 +149,6 @@ class JournalService
             foreach ($this->journal->detail->homepages->homepage as $homepage) {
                 array_push($moreValues, (string)$homepage);
             }
-
         }
 
         return $moreValues;
@@ -168,7 +166,6 @@ class JournalService
 
         return $appearance;
     }
-
 
     /**
      * @return string

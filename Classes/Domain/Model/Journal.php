@@ -331,5 +331,4 @@ class Journal extends AbstractEntity
         $this->lastFulltextIssue = $lastFulltextIssue;
         return $this;
     }
-
 }
