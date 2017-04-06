@@ -1,0 +1,18 @@
+{
+    "name": "subugoe/ezbrequest",
+    "description": "EZBRequest for journals",
+    "type": "typo3-cms-extension",
+    "license": "GPL-2.0+",
+    "authors": [{
+        "name": "Ingo Pfennigstorf",
+        "email": "i.pfennigstorf@gmail.com"
+    }],
+    "autoload": {
+        "classmap": [
+            "pi1/"
+        ],
+        "psr-4": {
+            "Subugoe\\Ezbrequest\\": "Classes/"
+        }
+    }
+}
