@@ -103,7 +103,6 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         return $this->pi_wrapInBaseClass($content);
     }
 
-
     /**
      * initializes the plugin: gets the settings from the flexform
      *
@@ -151,7 +150,10 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $fluidTemplate */
         $fluidTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-        $fluidTemplate->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/Single.html');
+        $fluidTemplate->setTemplateRootPaths([ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/']);
+        $fluidTemplate->setPartialRootPaths([ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/Partials/']);
+
+        $fluidTemplate->setTemplate('Single');
 
         $journal = $xml->ezb_detail_about_journal->journal;
 
@@ -233,7 +235,6 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $list = $result->navlist->other_pages;
 
             $journalNode = $result;
-
         } else {
             $xml = $this->fetchJournalList($listParams);
 
@@ -323,7 +324,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         /** @var SimpleXMLElement $pages $pages */
         foreach ($node as $pages) {
             if ($pages->getName() == 'current_page') {
-                $letterLinks .= '<li class="act">' . $currentPage . "</li>";
+                $letterLinks .= '<li class="act">' . $currentPage . '</li>';
             } else {
                 $params['sc'] = (String)$pages['sc'];
                 $params['lc'] = (String)$pages['lc'];
@@ -517,7 +518,6 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         return $xml;
     }
-
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ezbrequest/pi1/class.tx_ezbrequest_pi1.php']) {
