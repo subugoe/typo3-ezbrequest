@@ -1,173 +1,173 @@
 <table class="ezbrequest_itemtable">
 
-	<f:if condition="{journalItem.availability}">
-		<tr>
+    <f:if condition="{journalItem.availability}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="availability" extensionName="ezbrequest"/>
+            </td>
+            <td>
+                <ul class='ezbrequest-periods'>
+                    <f:for each="{journalItem.availability}" as="availability">
+                        <li>
+                            <f:link.external
+                                    target="_blank"
+                                    class="external-link-new-window"
+                                    uri="{availability.url}">
+                                <f:image class="journallist-image"
+                                         src="<f:uri.resource path='Images/{availability.image}.gif' extensionName='ezbrequest' />"/>
+                                {availability.label}
+                            </f:link.external>
+                        </li>
+                    </f:for>
+                </ul>
+            </td>
+        </tr>
+    </f:if>
 
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="availability" extensionName="ezbrequest"/>
-			</td>
-			<td>
-				<ul class='ezbrequest-periods'>
-					<f:for each="{journalItem.availability}" as="availability">
-						<li>
-							<f:link.external
-									target="_blank"
-									class="external-link-new-window"
-									uri="{availability.url}">
-								<f:image class="journallist-image" src="<f:uri.resource path='Images/{availability.image}.gif' extensionName='ezbrequest' />"/>
-								{availability.label}
-							</f:link.external>
-						</li>
-					</f:for>
-				</ul>
-			</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.publisher}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="publisher" extensionName="ezbrequest"/>
+            </td>
+            <td>{journalItem.publisher}</td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.publisher}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="publisher" extensionName="ezbrequest"/>
-			</td>
-			<td>{journalItem.publisher}</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.issn}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="ISSN" extensionName="ezbrequest"/>
+            </td>
+            <td>{journalItem.issn}</td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.issn}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="ISSN" extensionName="ezbrequest"/>
-			</td>
-			<td>{journalItem.issn}</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.zdb}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="zdb" extensionName="ezbrequest"/>
+            </td>
+            <td>
+                <f:link.external
+                        target="_blank"
+                        class="external-link-new-window"
+                        uri="http://dispatch.opac.d-nb.de/DB=1.1/SRT=YOP/CMD?ACT=SRCHA&IKT=8506&TRM={journalItem.zdb}">
+                    {journalItem.zdb}
+                </f:link.external>
+            </td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.zdb}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="zdb" extensionName="ezbrequest"/>
-			</td>
-			<td>
-				<f:link.external
-						target="_blank"
-						class="external-link-new-window"
-						uri="http://dispatch.opac.d-nb.de/DB=1.1/SRT=YOP/CMD?ACT=SRCHA&IKT=8506&TRM={journalItem.zdb}">
-					{journalItem.zdb}
-				</f:link.external>
-			</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.subject}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="subject" extensionName="ezbrequest"/>
+            </td>
+            <td>
+                <f:for each="{journalItem.subject}" as="subject" iteration="itemIterator">
+                    {subject}
+                    <f:if condition="{itemIterator.isLast}">
+                        <f:else>,</f:else>
+                    </f:if>
+                </f:for>
+            </td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.subject}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="subject" extensionName="ezbrequest"/>
-			</td>
-			<td>
-				<f:for each="{journalItem.subject}" as="subject" iteration="itemIterator">
-					{subject}
-					<f:if condition="{itemIterator.isLast}">
-						<f:else>,</f:else>
-					</f:if>
-				</f:for>
-			</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.keywords}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="keywords" extensionName="ezbrequest"/>
+            </td>
+            <td>
+                <f:for each="{journalItem.keywords}" as="keyword" iteration="keywordIterator">
+                    {keyword}
+                    <f:if condition="{keywordIterator.isLast}">
+                        <f:else>,</f:else>
+                    </f:if>
+                </f:for>
+            </td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.keywords}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="keywords" extensionName="ezbrequest"/>
-			</td>
-			<td>
-				<f:for each="{journalItem.keywords}" as="keyword" iteration="keywordIterator">
-					{keyword}
-					<f:if condition="{keywordIterator.isLast}">
-						<f:else>,</f:else>
-					</f:if>
-				</f:for>
-			</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.fulltext}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="fulltext" extensionName="ezbrequest"/>
+            </td>
+            <td>
+                <f:link.external
+                        target="_blank"
+                        class="external-link-new-window"
+                        uri="{journalItem.fulltext}">{journalItem.fulltext -> f:format.crop(maxCharacters: 50)}
+                </f:link.external>
+            </td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.fulltext}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="fulltext" extensionName="ezbrequest"/>
-			</td>
-			<td>
-				<f:link.external
-						target="_blank"
-						class="external-link-new-window"
-						uri="{journalItem.fulltext}">{journalItem.fulltext -> f:format.crop(maxCharacters: 50)}
-				</f:link.external>
-			</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.homepage}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="homepage" extensionName="ezbrequest"/>
+            </td>
+            <td>
+                <f:for each="{journalItem.homepage}" as="homepage" iteration="homepageIterator">
+                    <f:link.external
+                            target="_blank"
+                            uri="{homepage}"
+                            class="external-link-new-window">{homepage -> f:format.crop(maxCharacters: 50)}
+                    </f:link.external>
+                    <f:if condition="{homepageIterator.isLast}">
+                        <f:else>,</f:else>
+                    </f:if>
+                </f:for>
+            </td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.homepage}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="homepage" extensionName="ezbrequest"/>
-			</td>
-			<td>
-				<f:for each="{journalItem.homepage}" as="homepage" iteration="homepageIterator">
-					<f:link.external
-							target="_blank"
-							uri="{homepage}"
-							class="external-link-new-window">{homepage -> f:format.crop(maxCharacters: 50)}
-					</f:link.external>
-					<f:if condition="{homepageIterator.isLast}">
-						<f:else>,</f:else>
-					</f:if>
-				</f:for>
-			</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.firstFulltextIssue}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="first_fulltext_issue" extensionName="ezbrequest"/>
+            </td>
+            <td>{journalItem.firstFulltextIssue}</td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.firstFulltextIssue}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="first_fulltext_issue" extensionName="ezbrequest"/>
-			</td>
-			<td>{journalItem.firstFulltextIssue}</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.lastFulltextIssue}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="last_fulltext_issue" extensionName="ezbrequest"/>
+            </td>
+            <td>{journalItem.lastFulltextIssue}</td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.lastFulltextIssue}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="last_fulltext_issue" extensionName="ezbrequest"/>
-			</td>
-			<td>{journalItem.lastFulltextIssue}</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.appearance}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="appearance" extensionName="ezbrequest"/>
+            </td>
+            <td>{journalItem.appearance}</td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.appearance}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="appearance" extensionName="ezbrequest"/>
-			</td>
-			<td>{journalItem.appearance}</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.costs}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="costs" extensionName="ezbrequest"/>
+            </td>
+            <td>{journalItem.costs}</td>
+        </tr>
+    </f:if>
 
-	<f:if condition="{journalItem.costs}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="costs" extensionName="ezbrequest"/>
-			</td>
-			<td>{journalItem.costs}</td>
-		</tr>
-	</f:if>
-
-	<f:if condition="{journalItem.remarks}">
-		<tr>
-			<td class="ezbrequest_itemtable-key">
-				<f:translate key="remarks" extensionName="ezbrequest"/>
-			</td>
-			<td>{journalItem.remarks}</td>
-		</tr>
-	</f:if>
+    <f:if condition="{journalItem.remarks}">
+        <tr>
+            <td class="ezbrequest_itemtable-key">
+                <f:translate key="remarks" extensionName="ezbrequest"/>
+            </td>
+            <td>{journalItem.remarks}</td>
+        </tr>
+    </f:if>
 
 </table>

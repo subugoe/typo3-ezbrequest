@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Subugoe\Ezbrequest\Service;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -29,11 +32,10 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * ************************************************************* */
 
 /**
- * Provides methods to get data out of a raw journal dataset
+ * Provides methods to get data out of a raw journal dataset.
  */
 class JournalService
 {
-
     /**
      * @var \SimpleXmlElement
      */
@@ -41,6 +43,7 @@ class JournalService
 
     /**
      * JournalService constructor.
+     *
      * @param \SimpleXmlElement $journal
      */
     public function __construct($journal = null)
@@ -51,19 +54,19 @@ class JournalService
     /**
      * @return string
      */
-    public function getIssn()
+    public function getIssn(): string
     {
         $issn = '';
         $ISSNs = [];
         if ($this->journal->detail->E_ISSNs->E_ISSN) {
             foreach ($this->journal->detail->E_ISSNs->E_ISSN as $eissn) {
-                $ISSNs[] = $eissn . ' (' . LocalizationUtility::translate('electronic', 'ezbrequest') . ')';
+                $ISSNs[] = $eissn.' ('.LocalizationUtility::translate('electronic', 'ezbrequest').')';
             }
         }
 
         if ($this->journal->detail->P_ISSNs->P_ISSN) {
             foreach ($this->journal->detail->P_ISSNs->P_ISSN as $pissn) {
-                $ISSNs[] = $pissn . ' (' . LocalizationUtility::translate('printed', 'ezbrequest') . ')';
+                $ISSNs[] = $pissn.' ('.LocalizationUtility::translate('printed', 'ezbrequest').')';
             }
         }
 
@@ -77,15 +80,15 @@ class JournalService
     /**
      * @return array
      */
-    public function getPeriods()
+    public function getPeriods(): array
     {
         $periods = [];
         if ($this->journal->periods->period) {
             foreach ($this->journal->periods->period as $period) {
                 $link = [];
-                $link['label'] = $period->label ? (string)$period->label : 'Link';
-                $link['url'] = rawurldecode((string)$period->warpto_link['url']);
-                $link['image'] = (string)$period->journal_color['color'];
+                $link['label'] = $period->label ? (string) $period->label : 'Link';
+                $link['url'] = rawurldecode((string) $period->warpto_link['url']);
+                $link['image'] = (string) $period->journal_color['color'];
 
                 $periods[] = $link;
             }
@@ -95,19 +98,19 @@ class JournalService
     }
 
     /**
-     * return string
+     * return string.
      */
-    public function getPublisher()
+    public function getPublisher(): string
     {
-        return (string)$this->journal->detail->publisher;
+        return (string) $this->journal->detail->publisher;
     }
 
     /**
      * @return string
      */
-    public function getZdbNumber()
+    public function getZdbNumber(): string
     {
-        $this->journal->detail->ZDB_number ? $zdbNumber = (string)$this->journal->detail->ZDB_number : $zdbNumber = '';
+        $this->journal->detail->ZDB_number ? $zdbNumber = (string) $this->journal->detail->ZDB_number : $zdbNumber = '';
 
         return $zdbNumber;
     }
@@ -115,13 +118,13 @@ class JournalService
     /**
      * @return array
      */
-    public function getKeywords()
+    public function getKeywords(): array
     {
         $keywords = [];
         if ($this->journal->detail->keywords->keyword) {
             $keywords = [];
             foreach ($this->journal->detail->keywords->keyword as $keyword) {
-                $keywords[] = (string)$keyword;
+                $keywords[] = (string) $keyword;
             }
         }
 
@@ -129,11 +132,11 @@ class JournalService
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getFullText()
+    public function getFullText(): string
     {
-        $moreValues = $this->journal->detail->fulltext ? (string)$this->journal->detail->fulltext : '';
+        $moreValues = $this->journal->detail->fulltext ? (string) $this->journal->detail->fulltext : '';
 
         return $moreValues;
     }
@@ -141,13 +144,13 @@ class JournalService
     /**
      * @return array
      */
-    public function getHomepage()
+    public function getHomepage(): array
     {
         $moreValues = [];
 
         if ($this->journal->detail->homepages->homepage) {
             foreach ($this->journal->detail->homepages->homepage as $homepage) {
-                array_push($moreValues, (string)$homepage);
+                array_push($moreValues, (string) $homepage);
             }
         }
 
@@ -157,11 +160,11 @@ class JournalService
     /**
      * @return string
      */
-    public function getAppearance()
+    public function getAppearance(): string
     {
         $appearance = '';
         if ($this->journal->detail->appearence) {
-            $appearance = (string)$this->journal->detail->appearence;
+            $appearance = (string) $this->journal->detail->appearence;
         }
 
         return $appearance;
@@ -170,81 +173,86 @@ class JournalService
     /**
      * @return string
      */
-    public function getCosts()
+    public function getCosts(): string
     {
         $costs = '';
         if ($this->journal->detail->costs) {
-            $costs = (string)$this->journal->detail->costs;
+            $costs = (string) $this->journal->detail->costs;
         }
+
         return $costs;
     }
 
     /**
      * @return string
      */
-    public function getRemarks()
+    public function getRemarks(): string
     {
         $remarks = '';
         if ($this->journal->detail->remarks) {
-            $remarks = (string)$this->journal->detail->remarks;
+            $remarks = (string) $this->journal->detail->remarks;
         }
+
         return $remarks;
     }
 
     /**
      * @return array
      */
-    public function getSubject()
+    public function getSubject(): array
     {
         $subjects = [];
         if ($this->journal->detail->subjects->subject) {
             $subjects = [];
             foreach ($this->journal->detail->subjects->subject as $subject) {
-                $subjects[] = (string)$subject;
+                $subjects[] = (string) $subject;
             }
         }
+
         return $subjects;
     }
 
     /**
      * @return string
      */
-    public function getFirstFulltextIssue()
+    public function getFirstFulltextIssue(): string
     {
         $moreValues = '';
 
         if ($this->journal->detail->first_fulltext_issue) {
             if ($this->journal->detail->first_fulltext_issue->first_volume) {
-                $moreValues .= 'Vol. ' . $this->journal->detail->first_fulltext_issue->first_volume;
+                $moreValues .= 'Vol. '.$this->journal->detail->first_fulltext_issue->first_volume;
             }
             if ($this->journal->detail->first_fulltext_issue->first_issue) {
-                $moreValues .= ', ' . $this->journal->detail->first_fulltext_issue->first_issue;
+                $moreValues .= ', '.$this->journal->detail->first_fulltext_issue->first_issue;
             }
             if ($this->journal->detail->first_fulltext_issue->first_date) {
-                $moreValues .= ' (' . $this->journal->detail->first_fulltext_issue->first_date . ')';
-            };
+                $moreValues .= ' ('.$this->journal->detail->first_fulltext_issue->first_date.')';
+            }
         }
+
         return $moreValues;
     }
 
     /**
      * @return string
      */
-    public function getLastFulltextIssue()
+    public function getLastFulltextIssue(): string
     {
         $moreValues = '';
 
         if ($this->journal->detail->last_fulltext_issue) {
             if ($this->journal->detail->last_fulltext_issue->last_volume) {
-                $moreValues .= 'Vol. ' . $this->journal->detail->last_fulltext_issue->last_volume;
+                $moreValues .= 'Vol. '.$this->journal->detail->last_fulltext_issue->last_volume;
             }
             if ($this->journal->detail->last_fulltext_issue->last_issue) {
-                $moreValues .= ', ' . $this->journal->detail->last_fulltext_issue->last_issue;
+                $moreValues .= ', '.$this->journal->detail->last_fulltext_issue->last_issue;
             }
             if ($this->journal->detail->last_fulltext_issue->last_date) {
-                $moreValues .= ' (' . $this->journal->detail->last_fulltext_issue->last_date . ')';
-            };
+                $moreValues .= ' ('.$this->journal->detail->last_fulltext_issue->last_date.')';
+            }
         }
+
         return $moreValues;
     }
 }

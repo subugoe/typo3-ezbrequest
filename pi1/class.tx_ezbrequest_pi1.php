@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 /* * *************************************************************
  *  Copyright notice
  *
@@ -34,7 +35,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
-
     const LINK_INTERNAL = 0;
     const LINK_EZB_LIST_QUERY = 1;
     const LINK_EZB_SEARCH_QUERY = 2;
@@ -77,11 +77,12 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * The main method controls the data flow.
      *
-     * @param string $content : The PlugIn content
-     * @param array $conf : The PlugIn configuration
+     * @param string $content The Plugin content
+     * @param array  $conf    The Plugin configuration
+     *
      * @return string The content that is displayed on the website
      */
-    public function main($content, $conf)
+    public function main(string $content, array $conf): string
     {
         $this->init($conf);
 
@@ -100,14 +101,14 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         } else {
             $content = $this->getListView($listParams, $itemParams);
         }
+
         return $this->pi_wrapInBaseClass($content);
     }
 
     /**
-     * initializes the plugin: gets the settings from the flexform
+     * initializes the plugin: gets the settings from the flexform.
      *
      * @param array $conf : array with the TS configuration
-     * @return void
      */
     protected function init($conf)
     {
@@ -137,21 +138,22 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
         $pageRenderer = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
-        $pageRenderer->addCssFile(ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Css/ezb.css');
+        $pageRenderer->addCssFile(ExtensionManagementUtility::siteRelPath('ezbrequest').'Resources/Public/Css/ezb.css');
+
         return $this;
     }
 
     /**
      * @return string
      */
-    protected function getDetailView()
+    protected function getDetailView(): string
     {
-        $xml = \simplexml_load_file($this->conf['ezbItemURL'] . '?' . $_SERVER['QUERY_STRING']);
+        $xml = \simplexml_load_file($this->conf['ezbItemURL'].'?'.$_SERVER['QUERY_STRING']);
 
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $fluidTemplate */
         $fluidTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-        $fluidTemplate->setTemplateRootPaths([ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/']);
-        $fluidTemplate->setPartialRootPaths([ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/Partials/']);
+        $fluidTemplate->setTemplateRootPaths([ExtensionManagementUtility::extPath('ezbrequest').'Resources/Private/Templates/']);
+        $fluidTemplate->setPartialRootPaths([ExtensionManagementUtility::extPath('ezbrequest').'Resources/Private/Templates/Partials/']);
 
         $fluidTemplate->setTemplate('Single');
 
@@ -162,24 +164,24 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $itemTable = $this->createItems();
 
         $fluidTemplate->assignMultiple([
-            'headline' => htmlspecialchars($journal->title),
+            'headline' => htmlspecialchars((string) $journal->title),
             'access' => $journal->journal_color['color'],
             'notation' => $this->conf['notation'],
             'userIp' => $this->baseParams['client_ip'],
-            'linkUri' => $this->conf['ezbJourURL'] . '?' . '?' . str_replace('xmloutput=1', 'xmloutput=0',
+            'linkUri' => $this->conf['ezbJourURL'].'?'.'?'.str_replace('xmloutput=1', 'xmloutput=0',
                     $_SERVER['QUERY_STRING']),
             'journalItem' => $itemTable,
             'language' => [
                 'text' => $GLOBALS['TSFE']->lang,
-                'id' => $GLOBALS['TSFE']->sys_language_uid
-            ]
+                'id' => $GLOBALS['TSFE']->sys_language_uid,
+            ],
         ]);
 
         return $fluidTemplate->render();
     }
 
     /**
-     * Traverses xml node with journal details
+     * Traverses xml node with journal details.
      *
      * @return Journal
      */
@@ -207,16 +209,16 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     }
 
     /**
-     * @param $listParams
-     * @param $itemParams
+     * @param array $listParams
+     * @param array $itemParams
+     *
      * @return string
      */
-    protected function getListView($listParams, $itemParams)
+    protected function getListView(array $listParams, array $itemParams): string
     {
-
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $fluidTemplate */
         $fluidTemplate = GeneralUtility::makeInstance(\TYPO3\CMS\Fluid\View\StandaloneView::class);
-        $fluidTemplate->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('ezbrequest') . 'Resources/Private/Templates/List.html');
+        $fluidTemplate->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('ezbrequest').'Resources/Private/Templates/List.html');
 
         $search = empty(GeneralUtility::_GET('jq_term1')) ? false : true;
 
@@ -224,13 +226,13 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         if ($search) {
             //fetch search results
-            $URL = $this->conf['ezbSearchURL'] . '?' . $this->paramString($listParams,
-                    self::LINK_EZB_SEARCH_QUERY) . 'hits_per_page=100000';
+            $URL = $this->conf['ezbSearchURL'].'?'.$this->paramString($listParams,
+                    self::LINK_EZB_SEARCH_QUERY).'hits_per_page=100000';
             $xml = simplexml_load_file($URL);
 
             /** @var \SimpleXMLElement $result */
             $result = $xml->ezb_alphabetical_list_searchresult;
-            $hits = (int)$result->search_count;
+            $hits = (int) $result->search_count;
 
             $list = $result->navlist->other_pages;
 
@@ -251,11 +253,11 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         }
 
         if (($search) && isset($hits) && ($hits > 0)) {
-            $navi = '<span class="hits">' . $hits . ' ' . LocalizationUtility::translate('hitText',
-                    'ezbrequest') . '</span> ' . $navi;
+            $navi = '<span class="hits">'.$hits.' '.LocalizationUtility::translate('hitText',
+                    'ezbrequest').'</span> '.$navi;
         }
 
-        $institut = ((string)$xml->library ? (string)$xml->library : $this->pi_getLL('none')) . '; ';
+        $institut = ((string) $xml->library ? (string) $xml->library : $this->pi_getLL('none')).'; ';
 
         $journalList = $this->createList($journalNode, $itemParams);
 
@@ -268,8 +270,8 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'ipAddress' => $this->baseParams['client_ip'],
             'language' => [
                 'text' => $GLOBALS['TSFE']->lang,
-                'id' => $GLOBALS['TSFE']->sys_language_uid
-            ]
+                'id' => $GLOBALS['TSFE']->sys_language_uid,
+            ],
         ]);
 
         return $fluidTemplate->render();
@@ -281,9 +283,10 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      * for different kinds of queries and depending on the number of notations.
      *
      * @param array $params
-     * @param int $mode - one of  0: internal link,
-     *                            1: link for EZB list query
-     *                            2: link for EZB search query
+     * @param int   $mode   - one of  0: internal link,
+     *                      1: link for EZB list query
+     *                      2: link for EZB search query
+     *
      * @return string
      */
     protected function paramString($params, $mode = 0)
@@ -293,15 +296,15 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         foreach ($params as $name => $value) {
             if ($name === 'notation' && $mode > 0) {
                 if (strpos($value, ',') === false && $mode === self::LINK_EZB_LIST_QUERY) {
-                    $string .= $name . '=' . $value . '&';
+                    $string .= $name.'='.$value.'&';
                 } else {
                     $notations = explode(',', $value);
                     foreach ($notations as $notation) {
-                        $string .= 'Notations[]=' . $notation . '&';
+                        $string .= 'Notations[]='.$notation.'&';
                     }
                 }
             } else {
-                $string .= $name . '=' . $value . '&';
+                $string .= $name.'='.$value.'&';
             }
         }
 
@@ -309,12 +312,13 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     }
 
     /**
-     * Traverses  the top-node of the EZB journal navigation list  and generate a linked alphabetical navigation list
+     * Traverses  the top-node of the EZB journal navigation list  and generate a linked alphabetical navigation list.
      *
-     * @param array $node : xml-node with journal list navigation nodes
+     * @param array  $node        : xml-node with journal list navigation nodes
      * @param string $currentPage : name of the current list page
-     * @param array $params : navigation list parameters
-     * @return string        $letterLinks: linked navigation list as HTML-snippet
+     * @param array  $params      : navigation list parameters
+     *
+     * @return string $letterLinks: linked navigation list as HTML-snippet
      */
     protected function createNavi($node, $currentPage, $params)
     {
@@ -324,23 +328,25 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         /** @var SimpleXMLElement $pages $pages */
         foreach ($node as $pages) {
             if ($pages->getName() == 'current_page') {
-                $letterLinks .= '<li class="act">' . $currentPage . '</li>';
+                $letterLinks .= '<li class="act">'.$currentPage.'</li>';
             } else {
-                $params['sc'] = (String)$pages['sc'];
-                $params['lc'] = (String)$pages['lc'];
-                $label = (string)$pages;
-                $letterLinks .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '', $params) . '</li>';
+                $params['sc'] = (string) $pages['sc'];
+                $params['lc'] = (string) $pages['lc'];
+                $label = (string) $pages;
+                $letterLinks .= '<li>'.$this->pi_linkToPage($label, $this->conf['listTarget'], '', $params).'</li>';
             }
         }
+
         return $letterLinks;
     }
 
     /**
-     * Traverses  xml nodes of journal list and generates a linked list of journals with access information
+     * Traverses  xml nodes of journal list and generates a linked list of journals with access information.
      *
-     * @param \SimpleXMLElement $node : xml-node of journal list navigation nodes
-     * @param array $itemParams : parameters for journal details request
-     * @return string               $journalLinks: linked list of journals as HTML-snippet
+     * @param \SimpleXMLElement $node       : xml-node of journal list navigation nodes
+     * @param array             $itemParams : parameters for journal details request
+     *
+     * @return string $journalLinks: linked list of journals as HTML-snippet
      */
     protected function createList(\SimpleXMLElement $node, $itemParams)
     {
@@ -367,12 +373,14 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'colors' => '7',
             'lang' => $GLOBALS['TSFE']->lang,
         ];
+
         return $this;
     }
 
     /**
      * @param $node
      * @param $listParams
+     *
      * @return string
      */
     protected function getFirstLinkForList($node, $listParams)
@@ -383,21 +391,23 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($first != null) {
             $firstList = '';
             foreach ($first as $firstlink) {
-                $label = '&laquo;&nbsp;' . $firstlink->first_fifty_titles;
-                $listParams['sc'] = (String)$firstlink['sc'];
-                $listParams['lc'] = (String)$firstlink['lc'];
-                $listParams['sindex'] = (String)$firstlink['sindex'];
-                $firstList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '',
-                        $listParams) . '</li>';
+                $label = '&laquo;&nbsp;'.$firstlink->first_fifty_titles;
+                $listParams['sc'] = (string) $firstlink['sc'];
+                $listParams['lc'] = (string) $firstlink['lc'];
+                $listParams['sindex'] = (string) $firstlink['sindex'];
+                $firstList .= '<li>'.$this->pi_linkToPage($label, $this->conf['listTarget'], '',
+                        $listParams).'</li>';
             }
-            $journalLinks = '<ul class="firstlist">' . $firstList . '</ul>';
+            $journalLinks = '<ul class="firstlist">'.$firstList.'</ul>';
         }
+
         return $journalLinks;
     }
 
     /**
      * @param $itemParams
      * @param $journals
+     *
      * @return string
      */
     protected function getJournals($itemParams, $journals)
@@ -408,19 +418,19 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             foreach ($journals->journals->journal as $journal) {
                 $item = [];
                 $item['access'] = $journal->journal_color['color'];
-                $item['jour_id'] = (string)$journal['jourid'];
-                $item['title'] = htmlspecialchars((string)$journal->title);
+                $item['jour_id'] = (string) $journal['jourid'];
+                $item['title'] = htmlspecialchars((string) $journal->title);
                 $item['parameter'] = $itemParams;
 
-                $image = '<img alt="' . $item['access'] . '" class="journallist-image" src="' . ExtensionManagementUtility::siteRelPath('ezbrequest') . 'Resources/Public/Images/' . $item['access'] . '.gif" />';
+                $image = '<img alt="'.$item['access'].'" class="journallist-image" src="'.ExtensionManagementUtility::siteRelPath('ezbrequest').'Resources/Public/Images/'.$item['access'].'.gif" />';
 
-                $itemParams['jour_id'] = (string)$journal['jourid'];
+                $itemParams['jour_id'] = (string) $journal['jourid'];
                 $itemParams['xmloutput'] = '0';
-                $journalLinks .= '<li><span class="ampel"><a href="' . $this->conf['ezbItemURL'] . '?' . $this->paramString($itemParams) . '">' . $image . '</span>';
+                $journalLinks .= '<li><span class="ampel"><a href="'.$this->conf['ezbItemURL'].'?'.$this->paramString($itemParams).'">'.$image.'</span>';
 
                 $itemParams['xmloutput'] = '1';
                 $journalLinks .= $this->pi_linkToPage(htmlspecialchars_decode($item['title']),
-                        $this->conf['itemTarget'], '', $itemParams) . '</li>';
+                        $this->conf['itemTarget'], '', $itemParams).'</li>';
             }
             $journalLinks .= '</ul>';
         }
@@ -431,6 +441,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     /**
      * @param $node
      * @param $listParams
+     *
      * @return string
      */
     protected function getNextLinkForList($node, $listParams)
@@ -440,14 +451,14 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         if ($next != null) {
             $nextList = '';
             foreach ($next as $nextlink) {
-                $label = '&raquo;&nbsp;' . $nextlink->next_fifty_titles;
-                $listParams['sc'] = (String)$nextlink['sc'];
-                $listParams['lc'] = (String)$nextlink['lc'];
-                $listParams['sindex'] = (String)$nextlink['sindex'];
-                $nextList .= '<li>' . $this->pi_linkToPage($label, $this->conf['listTarget'], '',
-                        $listParams) . '</li>';
+                $label = '&raquo;&nbsp;'.$nextlink->next_fifty_titles;
+                $listParams['sc'] = (string) $nextlink['sc'];
+                $listParams['lc'] = (string) $nextlink['lc'];
+                $listParams['sindex'] = (string) $nextlink['sindex'];
+                $nextList .= '<li>'.$this->pi_linkToPage($label, $this->conf['listTarget'], '',
+                        $listParams).'</li>';
             }
-            $journalLinks .= '<ul class="nextlist">' . $nextList . '</ul>';
+            $journalLinks .= '<ul class="nextlist">'.$nextList.'</ul>';
         }
 
         return $journalLinks;
@@ -505,14 +516,15 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
     /**
      * @param $listParams
+     *
      * @return SimpleXMLElement
      */
     protected function fetchJournalList($listParams)
     {
         if (strpos($listParams['notation'], ',') === false) {
-            $URL = $this->conf['ezbListURL'] . '?' . $this->paramString($listParams, self::LINK_EZB_LIST_QUERY);
+            $URL = $this->conf['ezbListURL'].'?'.$this->paramString($listParams, self::LINK_EZB_LIST_QUERY);
         } else {
-            $URL = $this->conf['ezbSearchURL'] . '?' . $this->paramString($listParams, self::LINK_EZB_SEARCH_QUERY);
+            $URL = $this->conf['ezbSearchURL'].'?'.$this->paramString($listParams, self::LINK_EZB_SEARCH_QUERY);
         }
         $xml = simplexml_load_file($URL);
 
@@ -521,5 +533,5 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ezbrequest/pi1/class.tx_ezbrequest_pi1.php']) {
-    include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ezbrequest/pi1/class.tx_ezbrequest_pi1.php']);
+    include_once $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/ezbrequest/pi1/class.tx_ezbrequest_pi1.php'];
 }

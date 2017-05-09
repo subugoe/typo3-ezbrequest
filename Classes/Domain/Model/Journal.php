@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Subugoe\Ezbrequest\Domain\Model;
 
 /* * *************************************************************
@@ -28,13 +31,12 @@ namespace Subugoe\Ezbrequest\Domain\Model;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
- * Journal of a periodical
+ * Journal of a periodical.
  */
 class Journal extends AbstractEntity
 {
-
     /**
-     * @var string
+     * @var array
      */
     protected $availability;
 
@@ -54,7 +56,7 @@ class Journal extends AbstractEntity
     protected $zdb;
 
     /**
-     * @var string
+     * @var array
      */
     protected $keywords;
 
@@ -64,7 +66,7 @@ class Journal extends AbstractEntity
     protected $fulltext;
 
     /**
-     * @var string
+     * @var array
      */
     protected $homepage;
 
@@ -84,7 +86,7 @@ class Journal extends AbstractEntity
     protected $remarks;
 
     /**
-     * @var string
+     * @var array
      */
     protected $subject;
 
@@ -99,236 +101,262 @@ class Journal extends AbstractEntity
     protected $lastFulltextIssue;
 
     /**
-     * @return string
+     * @return array
      */
-    public function getAvailability()
+    public function getAvailability(): array
     {
         return $this->availability;
     }
 
     /**
-     * @param string $availability
+     * @param array $availability
+     *
      * @return Journal
      */
-    public function setAvailability($availability)
+    public function setAvailability(array $availability): Journal
     {
         $this->availability = $availability;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getPublisher()
+    public function getPublisher(): string
     {
         return $this->publisher;
     }
 
     /**
      * @param string $publisher
+     *
      * @return Journal
      */
-    public function setPublisher($publisher)
+    public function setPublisher(string $publisher): Journal
     {
         $this->publisher = $publisher;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getIssn()
+    public function getIssn(): string
     {
         return $this->issn;
     }
 
     /**
      * @param string $issn
+     *
      * @return Journal
      */
-    public function setIssn($issn)
+    public function setIssn(string $issn): Journal
     {
         $this->issn = $issn;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getZdb()
+    public function getZdb(): string
     {
         return $this->zdb;
     }
 
     /**
      * @param string $zdb
+     *
      * @return Journal
      */
-    public function setZdb($zdb)
+    public function setZdb(string $zdb): Journal
     {
         $this->zdb = $zdb;
+
         return $this;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getKeywords()
+    public function getKeywords(): array
     {
         return $this->keywords;
     }
 
     /**
-     * @param string $keywords
+     * @param array $keywords
+     *
      * @return Journal
      */
-    public function setKeywords($keywords)
+    public function setKeywords(array $keywords): Journal
     {
         $this->keywords = $keywords;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getFulltext()
+    public function getFulltext(): string
     {
         return $this->fulltext;
     }
 
     /**
      * @param string $fulltext
+     *
      * @return Journal
      */
-    public function setFulltext($fulltext)
+    public function setFulltext(string $fulltext): Journal
     {
         $this->fulltext = $fulltext;
+
         return $this;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getHomepage()
+    public function getHomepage(): array
     {
         return $this->homepage;
     }
 
     /**
-     * @param string $homepage
+     * @param array $homepage
+     *
      * @return Journal
      */
-    public function setHomepage($homepage)
+    public function setHomepage(array $homepage): Journal
     {
         $this->homepage = $homepage;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAppearance()
+    public function getAppearance(): string
     {
         return $this->appearance;
     }
 
     /**
      * @param string $appearance
+     *
      * @return Journal
      */
-    public function setAppearance($appearance)
+    public function setAppearance(string $appearance): Journal
     {
         $this->appearance = $appearance;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getCosts()
+    public function getCosts(): string
     {
         return $this->costs;
     }
 
     /**
      * @param string $costs
+     *
      * @return Journal
      */
-    public function setCosts($costs)
+    public function setCosts(string $costs): Journal
     {
         $this->costs = $costs;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getRemarks()
+    public function getRemarks(): string
     {
         return $this->remarks;
     }
 
     /**
      * @param string $remarks
+     *
      * @return Journal
      */
-    public function setRemarks($remarks)
+    public function setRemarks(string $remarks): Journal
     {
         $this->remarks = $remarks;
+
         return $this;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getSubject()
+    public function getSubject(): array
     {
         return $this->subject;
     }
 
     /**
-     * @param string $subject
+     * @param array $subject
+     *
      * @return Journal
      */
-    public function setSubject($subject)
+    public function setSubject(array $subject): Journal
     {
         $this->subject = $subject;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getFirstFulltextIssue()
+    public function getFirstFulltextIssue(): string
     {
         return $this->firstFulltextIssue;
     }
 
     /**
      * @param string $firstFulltextIssue
+     *
      * @return Journal
      */
-    public function setFirstFulltextIssue($firstFulltextIssue)
+    public function setFirstFulltextIssue(string $firstFulltextIssue): Journal
     {
         $this->firstFulltextIssue = $firstFulltextIssue;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getLastFulltextIssue()
+    public function getLastFulltextIssue(): string
     {
         return $this->lastFulltextIssue;
     }
 
     /**
      * @param string $lastFulltextIssue
+     *
      * @return Journal
      */
-    public function setLastFulltextIssue($lastFulltextIssue)
+    public function setLastFulltextIssue(string $lastFulltextIssue): Journal
     {
         $this->lastFulltextIssue = $lastFulltextIssue;
+
         return $this;
     }
 }
