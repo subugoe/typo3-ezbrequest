@@ -1,25 +1,4 @@
-<div id="navi" class="itemView">
-    <div id="journalNavi"></div>
-    <div id="ezbSearchForm">
-        <form action="" method="get">
-            <fieldset>
-                <input type="hidden" name="lang" value="{language.id}"/>
-                <label for="ezbSearchTerm" class="hidden">SearchTerm</label>
-                <input type="text" class="iputStartSmall" name="jq_term1" id="ezbSearchTerm" value=""/>
-                <label for="ezbSubmit" class="hidden">Submit</label>
-                <input type="submit" name="submit" id="ezbSubmit" class="submStartSmall" value="Suche"/>
-                <input type="hidden" name="jq_type1" value="KT"/>
-                <input type="hidden" name="notation" value="{notation}"/>
-                <input type="hidden" name="selected_colors" value="7"/>
-                <input type="hidden" name="client_ip" value="{userIp}"/>
-                <input type="hidden" name="lang" value="{language.text}"/>
-                <input type="hidden" name="xmloutput" value="1"/>
-            </fieldset>
-        </form>
-    </div>
-</div>
-
-<div class="jourItem">
+<div class="jourItem journal-items">
     <h1 class="title">
         <f:image src="<f:uri.resource path='Images/{access}.gif' extensionName='ezbrequest'/>" alt="{access}"/>
         <f:link.external uri="{linkUri}">{headline -> f:format.htmlentitiesDecode()}</f:link.external>
