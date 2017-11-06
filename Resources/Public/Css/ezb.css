@@ -3,6 +3,7 @@
   font-weight: normal; }
   .tx-ezbrequest-pi1 a:link:hover {
     text-decoration: underline; }
+
 .tx-ezbrequest-pi1 #journalNavi {
   float: left;
   width: 55%;
@@ -14,6 +15,7 @@
     display: inline; }
   .tx-ezbrequest-pi1 #journalNavi a:link {
     padding: 0 3px; }
+
 .tx-ezbrequest-pi1 ul {
   list-style-type: none;
   padding: 0;
@@ -21,9 +23,15 @@
   .tx-ezbrequest-pi1 ul .journallist-image {
     width: 30px;
     height: 12px; }
+
+.tx-ezbrequest-pi1 .access-information li {
+  list-style-type: none;
+  margin-left: 0; }
+
 .tx-ezbrequest-pi1 fieldset {
   margin-right: 10px;
   text-align: right; }
+
 .tx-ezbrequest-pi1 .jourItem .title {
   display: block;
   position: relative;
@@ -32,6 +40,7 @@
   font-size: 166%;
   line-height: 125%;
   font-weight: bold; }
+
 .tx-ezbrequest-pi1 .ezbrequest_itemtable-key {
   display: block;
   text-align: right;
@@ -72,5 +81,3 @@
 
 .tx-ezbrequest-pi1 table td {
   vertical-align: top; }
-
-/*# sourceMappingURL=ezb.css.map */

@@ -1,0 +1,21 @@
+{
+  "name": "ezbrequest",
+  "version": "1.0.0",
+  "description": "TYPO3 Extension ezbrequest",
+  "scripts": {
+    "build": "node-sass Resources/Private/Scss/ezb.scss Resources/Public/Css/ezb.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subugoe/typo3-ezbrequest.git"
+  },
+  "author": "Ingo Pfennigstorf <pfennigstorf@sub.uni-goettingen.de>",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/subugoe/typo3-ezbrequest/issues"
+  },
+  "homepage": "https://github.com/subugoe/typo3-ezbrequest#readme",
+  "devDependencies": {
+    "node-sass": "^4.6.0"
+  }
+}

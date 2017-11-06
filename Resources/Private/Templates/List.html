@@ -31,7 +31,28 @@
 <div class="institution-information">
     <h3 class="notify">Information</h3>
     <p>
-       <f:if condition="{institute}"><span class="info"><f:translate key="institut" extensionName="ezbrequest"/> {institute}</span><br></f:if>
+        <span class="info"><f:translate key="institut" extensionName="ezbrequest"/> {institute}</span><br>
         <span class="info"><f:translate key="ipText" extensionName="ezbrequest"/> {ipAddress}</span>
     </p>
+</div>
+
+<div class="access-information">
+    <ul>
+        <li>
+            <f:image src="{f:uri.resource(path:'Images/green.gif', extensionName:'ezbrequest')}" alt="" class="journallist-image" />
+            <f:translate key="access_green" extensionName="ezbrequest"/>
+        </li>
+        <li>
+            <f:image src="{f:uri.resource(path:'Images/yellow.gif', extensionName:'ezbrequest')}" alt="" class="journallist-image" />
+            <f:translate key="access_yellow" extensionName="ezbrequest"/>
+        </li>
+        <li>
+            <f:image src="{f:uri.resource(path:'Images/yellow_red.gif', extensionName:'ezbrequest')}" alt="" class="journallist-image" />
+            <f:translate key="access_yellow_red" extensionName="ezbrequest"/>
+        </li>
+        <li>
+            <f:image src="{f:uri.resource(path:'Images/red.gif', extensionName:'ezbrequest')}" alt="" class="journallist-image" />
+            <f:translate key="access_red" extensionName="ezbrequest"/>
+        </li>
+    </ul>
 </div>
