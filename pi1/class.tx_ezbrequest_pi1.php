@@ -248,16 +248,15 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             $journalNode = $listNodes[0];
             $currentPage = $journalNode->navlist->current_page;
         }
-        if ($list != null && isset($currentPage)) {
+        if (null != $list && isset($currentPage)) {
             $navi = $this->createNavi($list, $currentPage, $listParams);
         }
 
         if (($search) && isset($hits) && ($hits > 0)) {
-            $navi = '<span class="hits">'.$hits.' '.LocalizationUtility::translate('hitText',
-                    'ezbrequest').'</span> '.$navi;
+            $navi = '<span class="hits">'.$hits.' '.LocalizationUtility::translate('hitText', 'ezbrequest').'</span> '.$navi;
         }
 
-        $institut = ((string) $xml->library ? (string) $xml->library : $this->pi_getLL('none')).'; ';
+        $institut = ((string) $xml->library ? (string) $xml->library : LocalizationUtility::translate('none', 'ezbrequest'));
 
         $journalList = $this->createList($journalNode, $itemParams);
 
@@ -294,8 +293,8 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $string = '';
 
         foreach ($params as $name => $value) {
-            if ($name === 'notation' && $mode > 0) {
-                if (strpos($value, ',') === false && $mode === self::LINK_EZB_LIST_QUERY) {
+            if ('notation' === $name && $mode > 0) {
+                if (false === strpos($value, ',') && self::LINK_EZB_LIST_QUERY === $mode) {
                     $string .= $name.'='.$value.'&';
                 } else {
                     $notations = explode(',', $value);
@@ -327,7 +326,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         /** @var SimpleXMLElement $pages $pages */
         foreach ($node as $pages) {
-            if ($pages->getName() == 'current_page') {
+            if ('current_page' == $pages->getName()) {
                 $letterLinks .= '<li class="act">'.$currentPage.'</li>';
             } else {
                 $params['sc'] = (string) $pages['sc'];
@@ -388,7 +387,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
         $journalLinks = '';
         $first = $node->first_fifty;
 
-        if ($first != null) {
+        if (null != $first) {
             $firstList = '';
             foreach ($first as $firstlink) {
                 $label = '&laquo;&nbsp;'.$firstlink->first_fifty_titles;
@@ -448,7 +447,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         $journalLinks = '';
         $next = $node->next_fifty;
-        if ($next != null) {
+        if (null != $next) {
             $nextList = '';
             foreach ($next as $nextlink) {
                 $label = '&raquo;&nbsp;'.$nextlink->next_fifty_titles;
@@ -471,7 +470,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     {
         if ($this->conf['bibid']) {
             $this->baseParams['bibid'] = $this->conf['bibid'];
-            if ($this->conf['bibid'] == 'NATLI') {
+            if ('NATLI' == $this->conf['bibid']) {
                 $this->baseParams['colors'] = 2;
             }
         } else {
@@ -487,7 +486,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function setListTarget()
     {
         $listTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'listTarget', 'sDEF');
-        $this->conf['listTarget'] = $listTarget ? $listTarget : $this->conf['currentPage'];
+        $this->conf['listTarget'] = $listTarget ?? $this->conf['currentPage'];
 
         return $this;
     }
@@ -498,7 +497,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function setItemTarget()
     {
         $itemTarget = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'itemTarget', 'sDEF');
-        $this->conf['itemTarget'] = $itemTarget ? $itemTarget : $this->conf['currentPage'];
+        $this->conf['itemTarget'] = $itemTarget ?? $this->conf['currentPage'];
 
         return $this;
     }
@@ -509,7 +508,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
     protected function setInstitutionIdentifier()
     {
         $bibID = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'bibid', 'sDEF');
-        $this->conf['bibid'] = $bibID ? $bibID : $this->conf['bibid'];
+        $this->conf['bibid'] = $bibID ?? $this->conf['bibid'];
 
         return $this;
     }
@@ -521,7 +520,7 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
      */
     protected function fetchJournalList($listParams)
     {
-        if (strpos($listParams['notation'], ',') === false) {
+        if (false === strpos($listParams['notation'], ',')) {
             $URL = $this->conf['ezbListURL'].'?'.$this->paramString($listParams, self::LINK_EZB_LIST_QUERY);
         } else {
             $URL = $this->conf['ezbSearchURL'].'?'.$this->paramString($listParams, self::LINK_EZB_SEARCH_QUERY);

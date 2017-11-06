@@ -31,7 +31,7 @@
 <div class="institution-information">
     <h3 class="notify">Information</h3>
     <p>
-       <span class="info"><f:translate key="institut" extensionName="ezbrequest"/> {institute}</span><br>
+       <f:if condition="{institute}"><span class="info"><f:translate key="institut" extensionName="ezbrequest"/> {institute}</span><br></f:if>
         <span class="info"><f:translate key="ipText" extensionName="ezbrequest"/> {ipAddress}</span>
     </p>
 </div>
