@@ -16,6 +16,6 @@
   },
   "homepage": "https://github.com/subugoe/typo3-ezbrequest#readme",
   "devDependencies": {
-    "node-sass": "^4.6.0"
+    "node-sass": "^4.9.0"
   }
 }
