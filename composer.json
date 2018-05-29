@@ -2,7 +2,7 @@
     "name": "subugoe/ezbrequest",
     "description": "EZBRequest for journals",
     "type": "typo3-cms-extension",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "authors": [{
         "name": "Ingo Pfennigstorf",
         "email": "i.pfennigstorf@gmail.com"
@@ -14,5 +14,8 @@
         "psr-4": {
             "Subugoe\\Ezbrequest\\": "Classes/"
         }
+    },
+    "require": {
+        "typo3/cms-core": "^8.7.13 || >=9.1.0 <9.3.0"
     }
 }

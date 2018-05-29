@@ -168,8 +168,11 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
             'access' => $journal->journal_color['color'],
             'notation' => $this->conf['notation'],
             'userIp' => $this->baseParams['client_ip'],
-            'linkUri' => $this->conf['ezbJourURL'].'?'.'?'.str_replace('xmloutput=1', 'xmloutput=0',
-                    $_SERVER['QUERY_STRING']),
+            'linkUri' => $this->conf['ezbJourURL'].'?'.'?'.str_replace(
+                'xmloutput=1',
+                'xmloutput=0',
+                    $_SERVER['QUERY_STRING']
+            ),
             'journalItem' => $itemTable,
             'language' => [
                 'text' => $GLOBALS['TSFE']->lang,
@@ -226,8 +229,10 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 
         if ($search) {
             //fetch search results
-            $URL = $this->conf['ezbSearchURL'].'?'.$this->paramString($listParams,
-                    self::LINK_EZB_SEARCH_QUERY).'hits_per_page=100000';
+            $URL = $this->conf['ezbSearchURL'].'?'.$this->paramString(
+                $listParams,
+                    self::LINK_EZB_SEARCH_QUERY
+            ).'hits_per_page=100000';
             $xml = simplexml_load_file($URL);
 
             /** @var \SimpleXMLElement $result */
@@ -394,8 +399,12 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $listParams['sc'] = (string) $firstlink['sc'];
                 $listParams['lc'] = (string) $firstlink['lc'];
                 $listParams['sindex'] = (string) $firstlink['sindex'];
-                $firstList .= '<li>'.$this->pi_linkToPage($label, $this->conf['listTarget'], '',
-                        $listParams).'</li>';
+                $firstList .= '<li>'.$this->pi_linkToPage(
+                    $label,
+                    $this->conf['listTarget'],
+                    '',
+                        $listParams
+                ).'</li>';
             }
             $journalLinks = '<ul class="firstlist">'.$firstList.'</ul>';
         }
@@ -428,8 +437,12 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $journalLinks .= '<li><span class="ampel"><a href="'.$this->conf['ezbItemURL'].'?'.$this->paramString($itemParams).'">'.$image.'</span>';
 
                 $itemParams['xmloutput'] = '1';
-                $journalLinks .= $this->pi_linkToPage(htmlspecialchars_decode($item['title']),
-                        $this->conf['itemTarget'], '', $itemParams).'</li>';
+                $journalLinks .= $this->pi_linkToPage(
+                    htmlspecialchars_decode($item['title']),
+                        $this->conf['itemTarget'],
+                    '',
+                    $itemParams
+                ).'</li>';
             }
             $journalLinks .= '</ul>';
         }
@@ -454,8 +467,12 @@ class tx_ezbrequest_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
                 $listParams['sc'] = (string) $nextlink['sc'];
                 $listParams['lc'] = (string) $nextlink['lc'];
                 $listParams['sindex'] = (string) $nextlink['sindex'];
-                $nextList .= '<li>'.$this->pi_linkToPage($label, $this->conf['listTarget'], '',
-                        $listParams).'</li>';
+                $nextList .= '<li>'.$this->pi_linkToPage(
+                    $label,
+                    $this->conf['listTarget'],
+                    '',
+                        $listParams
+                ).'</li>';
             }
             $journalLinks .= '<ul class="nextlist">'.$nextList.'</ul>';
         }

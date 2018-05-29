@@ -1,6 +1,7 @@
 <?php
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin([
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
+    [
     'LLL:EXT:ezbrequest/Resources/Private/Language/locallang_db.xml:tt_content.list_type_pi1',
     'ezbrequest_pi1',
     ],
